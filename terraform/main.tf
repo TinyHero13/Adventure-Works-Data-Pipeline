@@ -16,3 +16,9 @@ resource "databricks_notebook" "api_ingestion" {
   language = "PYTHON"
   content_base64 = base64encode(file("${path.module}/notebooks/api_ingestion.py"))
 }
+
+resource "databricks_notebook" "db_ingestion" {
+  path     = "${var.output_path}/db_ingestion"
+  language = "PYTHON"
+  content_base64 = base64encode(file("${path.module}/notebooks/db_ingestion.py"))
+}

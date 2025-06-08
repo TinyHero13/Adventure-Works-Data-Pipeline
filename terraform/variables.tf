@@ -30,3 +30,21 @@ variable "api_password" {
   type        = string
   sensitive   = true
 }
+
+variable "db_url" {
+  description = "database URL"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_user" {
+  description = "database username"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_password" {
+  description = "database password"
+  type        = string
+  sensitive   = true
+}

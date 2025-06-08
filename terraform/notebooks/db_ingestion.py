@@ -1,7 +1,7 @@
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-path_output = dbutils.secrets.get(scope="app-credentials", key="OUTPUT_PATH")
+path_output = dbutils.secrets.get(scope="app-credentials", key="PATH_TABLE_OUTPUT")
 jdbcUrl = dbutils.secrets.get(scope="app-credentials", key="DB_URL")
 connectionProperties = {
     "user": dbutils.secrets.get(scope="app-credentials", key="DB_USER"),

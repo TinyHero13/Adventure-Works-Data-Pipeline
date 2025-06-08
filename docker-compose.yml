@@ -7,6 +7,7 @@ services:
       - TF_VAR_databricks_host=${DATABRICKS_HOST}
       - TF_VAR_databricks_token=${DATABRICKS_TOKEN}
       - TF_VAR_output_path=${OUTPUT_PATH}
+      - TF_VAR_path_table_output=${PATH_TABLE_OUTPUT}
       - TF_VAR_api_url=${API_URL}
       - TF_VAR_api_user=${API_USER}
       - TF_VAR_api_password=${API_PASSWORD}

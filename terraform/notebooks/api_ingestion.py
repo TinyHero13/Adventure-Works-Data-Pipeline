@@ -1,4 +1,3 @@
-import getpass
 import requests
 from pyspark.sql.functions import schema_of_json, lit
 from pyspark.sql.functions import from_json
@@ -7,7 +6,7 @@ import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-path_output = dbutils.secrets.get(scope="app-credentials", key="OUTPUT_PATH")
+path_output = dbutils.secrets.get(scope="app-credentials", key="PATH_TABLE_OUTPUT")
 url = dbutils.secrets.get(scope="app-credentials", key="API_URL") 
 user = dbutils.secrets.get(scope="app-credentials", key="API_USER")
 password = dbutils.secrets.get(scope="app-credentials", key="API_PASSWORD")
@@ -105,9 +104,10 @@ def get_api_data(endpoint, offset, limit, max_retries=10):
     print(f'Extracting {endpoint} - offset: {offset}')
     for attempt in range(1, max_retries+1):
         try:
-            response = session.get(
+            response = requests.get(
                 url + endpoint,
                 params={'offset': offset, 'limit': limit},
+                auth=(user, password),
                 timeout=(5, 15)  
             )
             response.raise_for_status()

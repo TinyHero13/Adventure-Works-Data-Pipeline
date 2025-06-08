@@ -48,3 +48,9 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "path_table_output" {
+  description = "Output location for delta tables in Databricks"
+  type        = string
+  sensitive   = true
+}

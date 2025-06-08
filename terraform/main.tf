@@ -23,9 +23,9 @@ resource "databricks_notebook" "db_ingestion" {
   content_base64 = base64encode(file("${path.module}/notebooks/db_ingestion.py"))
 }
 
-resource "databricks_secret" "output_path" {
-  key          = "OUTPUT_PATH"
-  string_value = var.output_path
+resource "databricks_secret" "path_table_output" {
+  key          = "PATH_TABLE_OUTPUT"
+  string_value = var.path_table_output
   scope        = "app-credentials"
 }
 

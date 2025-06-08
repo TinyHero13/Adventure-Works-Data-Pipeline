@@ -7,7 +7,7 @@ import re
 import time
 from concurrent.futures import ThreadPoolExecutor
 
-path_output = dbutils.secrets.get(scope="app-credentials", key="PATH_OUTPUT")
+path_output = dbutils.secrets.get(scope="app-credentials", key="OUTPUT_PATH")
 url = dbutils.secrets.get(scope="app-credentials", key="API_URL") 
 user = dbutils.secrets.get(scope="app-credentials", key="API_USER")
 password = dbutils.secrets.get(scope="app-credentials", key="API_PASSWORD")

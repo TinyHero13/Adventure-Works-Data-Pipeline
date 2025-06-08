@@ -3,6 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    environment:
+      - TF_VAR_DATABRICKS_HOST=${DATABRICKS_HOST}
+      - TF_VAR_DATABRICKS_TOKEN=${DATABRICKS_TOKEN}
     volumes:
       - ./terraform:/workspace
       - terraform_state:/workspace/.terraform

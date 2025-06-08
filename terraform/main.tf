@@ -23,42 +23,44 @@ resource "databricks_notebook" "db_ingestion" {
   content_base64 = base64encode(file("${path.module}/notebooks/db_ingestion.py"))
 }
 
-resource "databricks_secret_scope" "app_credentials" {
-  name = "app-credentials"
+resource "databricks_secret" "output_path" {
+  key          = "OUTPUT_PATH"
+  string_value = var.output_path
+  scope        = "app-credentials"
 }
 
 resource "databricks_secret" "db_url" {
   key          = "DB_URL"
   string_value = var.db_url
-  scope        = databricks_secret_scope.app_credentials.name
+  scope        = "app-credentials"
 }
 
 resource "databricks_secret" "db_user" {
   key          = "DB_USER"
   string_value = var.db_user
-  scope        = databricks_secret_scope.app_credentials.name
+  scope        = "app-credentials"
 }
 
 resource "databricks_secret" "db_password" {
   key          = "DB_PASSWORD"
   string_value = var.db_password
-  scope        = databricks_secret_scope.app_credentials.name
+  scope        = "app-credentials"
 }
 
 resource "databricks_secret" "api_url" {
   key          = "API_URL"
   string_value = var.api_url
-  scope        = databricks_secret_scope.app_credentials.name
+  scope        = "app-credentials"
 }
 
 resource "databricks_secret" "api_user" {
   key          = "API_USER"
   string_value = var.api_user
-  scope        = databricks_secret_scope.app_credentials.name
+  scope        = "app-credentials"
 }
 
 resource "databricks_secret" "api_password" {
   key          = "API_PASSWORD"
   string_value = var.api_password
-  scope        = databricks_secret_scope.app_credentials.name
+  scope        = "app-credentials"
 }

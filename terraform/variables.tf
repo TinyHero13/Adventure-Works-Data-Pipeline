@@ -8,3 +8,25 @@ variable "databricks_token" {
   type        = string
   sensitive   = true
 }
+
+variable "output_path" {
+  description = "Output path for the notebook in Databricks"
+  type        = string
+}
+
+variable "api_url" {
+  description = "API URL"
+  type        = string
+}
+
+variable "api_user" {
+  description = "API username"
+  type        = string
+  sensitive   = true
+}
+
+variable "api_password" {
+  description = "API password"
+  type        = string
+  sensitive   = true
+}

@@ -1,60 +1,111 @@
-import time
 from concurrent.futures import ThreadPoolExecutor
+from pyspark.sql import DataFrame
 
-path_output = dbutils.secrets.get(scope="app-credentials", key="PATH_TABLE_OUTPUT")
-jdbcUrl = dbutils.secrets.get(scope="app-credentials", key="DB_URL")
-connectionProperties = {
+# COMMAND ----------
+
+PATH_OUTPUT = dbutils.secrets.get(scope="app-credentials", key="PATH_TABLE_OUTPUT")
+JDBC_URL = dbutils.secrets.get(scope="app-credentials", key="DB_URL")
+CONNECTION_PROPERTIES = {
     "user": dbutils.secrets.get(scope="app-credentials", key="DB_USER"),
     "password": dbutils.secrets.get(scope="app-credentials", key="DB_PASSWORD"),
     "driver": "com.microsoft.sqlserver.jdbc.SQLServerDriver"
 }
 
-def get_all_db_tables():
-    """Get all tables from the database"""
-    query = """SELECT
+MAX_WORKERS = 15
+EXCLUDED_SCHEMAS = ['dbo', 'sys', 'information_schema']
+TABLE_PREFIX = 'raw_db'
+DEFAULT_SAVE_MODE = 'overwrite'
+
+# COMMAND ----------
+
+def get_all_db_tables() -> DataFrame:
+    """
+    Get all tables from the database
+        
+    Returns:
+        DataFrame: Spark DataFrame containing TABLE_NAME and TABLE_SCHEMA columns
+    """
+
+    excluded_schemas_str = "', '".join(EXCLUDED_SCHEMAS)
+    query = f"""SELECT
         TABLE_NAME, 
         TABLE_SCHEMA 
     FROM INFORMATION_SCHEMA.TABLES 
-    WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA != 'dbo'"""
-    df = spark.read.jdbc(url=jdbcUrl, table=f"({query}) as tables", properties=connectionProperties)
+    WHERE TABLE_TYPE = 'BASE TABLE' 
+    AND TABLE_SCHEMA NOT IN ('{excluded_schemas_str}')"""
+    df = spark.read.jdbc(url=JDBC_URL, table=f"({query}) as tables", properties=CONNECTION_PROPERTIES)
     
     return df
 
-def extract_table(schema, table):
-    """Extract a specified table from the database"""
+def extract_table(schema, table) -> DataFrame:
+    """
+    Extract a specified table from the database
+    
+    Args:
+        schema: The schema name of the table
+        table: The table name to extract
+        
+    Returns:
+        DataFrame: Spark DataFrame with table data
+        
+    Raises:
+        Exception: If extraction fails
+    """
+
     try:
-        df = spark.read.jdbc(url=jdbcUrl, table=f"{schema}.{table}", properties=connectionProperties)
+        df = spark.read.jdbc(url=JDBC_URL, table=f"{schema}.{table}", properties=CONNECTION_PROPERTIES)
         return df
     
     except Exception as e:
-        print(f"Error to extract {schema}.{table}: {e}")
-        return None
+        raise Exception(f"Error to extract {schema}.{table}: {e}")
 
-def save_table(df, schema, table):
-    """Save the table on the databricks schema as delta lake"""
-    try:
-        df.write.format("delta").mode("overwrite").saveAsTable(f'{path_output}.raw_db_{schema}_{table}')
-    except Exception as e:
-        print(f"Error to save {schema}.{table}: {e}")
-        return None
+def save_table(df, schema, table) -> None:
+    """
+    Save the DataFrame as a Delta Lake table on Databricks
     
-def process_single_table(schema, table):
-    """Process a table in parallel"""
+    Args:
+        df: Spark DataFrame to save
+        schema: Source schema name for table naming
+        table: Source table name for table naming
+        
+    Raises:
+        Exception: If save operation fails
+    """
+
+    try:
+        df.write.format("delta").mode(DEFAULT_SAVE_MODE).saveAsTable(f'{PATH_OUTPUT}.{TABLE_PREFIX}_{schema}_{table}')
+    except Exception as e:
+        raise Exception(f"Error to save {schema}.{table}: {e}")
+
+def process_single_table(schema, table) -> str:
+    """
+    Process a single table by extracting and saving it as Delta Lake
+    
+    Args:
+        schema: The schema name of the table to process
+        table: The table name to process
+        
+    Returns:
+        str: Status message indicating success or failure of the operation
+    
+    Raises:
+        Exception: If any error occurs during extraction or saving
+    """
+
     try:
         df = extract_table(schema, table)
-
-        if df is None:
-            return f"No data for {schema}.{table}"
-    
         save_table(df, schema, table)
         return f'Extraction complete for {schema}.{table}'
     
     except Exception as e:
         return f"Error {schema}.{table}: {e}"
 
-def el_tables_db():
-    """Main function to run all the pipeline"""
-    time_start = time.time()
+def el_tables_db() -> None:
+    """
+    Main function to run all the pipeline
+    
+    """
+
     tables_df = get_all_db_tables()
     total_tables = tables_df.count()
 
@@ -69,8 +120,6 @@ def el_tables_db():
             result = future.result()
             print(result)
     
-    time_end = time.time()
     print('Migration complete to delta lake')
-    print(f"Total time: {time_end - time_start}")
-
+    
 el_tables_db()

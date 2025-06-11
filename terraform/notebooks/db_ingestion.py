@@ -1,3 +1,4 @@
+"""AW Database Data Ingestion Pipeline."""
 from concurrent.futures import ThreadPoolExecutor
 from pyspark.sql import DataFrame
 
@@ -33,8 +34,10 @@ def get_all_db_tables() -> DataFrame:
     FROM INFORMATION_SCHEMA.TABLES 
     WHERE TABLE_TYPE = 'BASE TABLE' 
     AND TABLE_SCHEMA NOT IN ('{excluded_schemas_str}')"""
-    df = spark.read.jdbc(url=JDBC_URL, table=f"({query}) as tables", properties=CONNECTION_PROPERTIES)
-    
+    df = spark.read.jdbc(
+        url=JDBC_URL,
+        table=f"({query}) as tables",
+        properties=CONNECTION_PROPERTIES)
     return df
 
 def extract_table(schema, table) -> DataFrame:
@@ -49,15 +52,18 @@ def extract_table(schema, table) -> DataFrame:
         DataFrame: Spark DataFrame with table data
         
     Raises:
-        Exception: If extraction fails
+        RuntimeError: If extraction fails
     """
 
     try:
-        df = spark.read.jdbc(url=JDBC_URL, table=f"{schema}.{table}", properties=CONNECTION_PROPERTIES)
+        df = spark.read.jdbc(
+            url=JDBC_URL,
+            table=f"{schema}.{table}",
+            properties=CONNECTION_PROPERTIES)
         return df
-    
-    except Exception as e:
-        raise Exception(f"Error to extract {schema}.{table}: {e}")
+
+    except Exception as e: 
+        raise RuntimeError(f"Error to extract {schema}.{table}: {e}") from e
 
 def save_table(df, schema, table) -> None:
     """
@@ -69,13 +75,14 @@ def save_table(df, schema, table) -> None:
         table: Source table name for table naming
         
     Raises:
-        Exception: If save operation fails
+        RuntimeError: If save operation fails
     """
 
     try:
-        df.write.format("delta").mode(DEFAULT_SAVE_MODE).saveAsTable(f'{PATH_OUTPUT}.{TABLE_PREFIX}_{schema}_{table}')
+        df.write.format("delta").mode(DEFAULT_SAVE_MODE).saveAsTable(
+            f'{PATH_OUTPUT}.{TABLE_PREFIX}_{schema}_{table}')
     except Exception as e:
-        raise Exception(f"Error to save {schema}.{table}: {e}")
+        raise RuntimeError(f"Error to save {schema}.{table}: {e}") from e
 
 def process_single_table(schema, table) -> str:
     """
@@ -89,21 +96,21 @@ def process_single_table(schema, table) -> str:
         str: Status message indicating success or failure of the operation
     
     Raises:
-        Exception: If any error occurs during extraction or saving
+        RuntimeError: If any error occurs during extraction or saving
     """
 
     try:
         df = extract_table(schema, table)
         save_table(df, schema, table)
         return f'Extraction complete for {schema}.{table}'
-    
-    except Exception as e:
+
+    except RuntimeError as e:
         return f"Error {schema}.{table}: {e}"
 
 def el_tables_db() -> None:
     """
     Main function to run all the pipeline
-    
+
     """
 
     tables_df = get_all_db_tables()
@@ -111,7 +118,7 @@ def el_tables_db() -> None:
 
     print(f'Total tables: {total_tables}')
 
-    with ThreadPoolExecutor(max_workers=15) as executor: 
+    with ThreadPoolExecutor(max_workers=15) as executor:
         futures = [
             executor.submit(process_single_table, row.TABLE_SCHEMA, row.TABLE_NAME)
             for row in tables_df.collect()
@@ -119,7 +126,8 @@ def el_tables_db() -> None:
         for future in futures:
             result = future.result()
             print(result)
-    
+
     print('Migration complete to delta lake')
-    
+
+
 el_tables_db()

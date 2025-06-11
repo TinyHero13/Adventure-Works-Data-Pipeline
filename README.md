@@ -43,6 +43,25 @@ graph TB
     NB1 --> DL
     NB2 --> DL
 ```
+
+## Project structure
+
+```
+aw-lh-checkpoint/
+├── README.md                    
+├── deploy.sh                    # Automated deployment script
+├── Dockerfile                   # Terraform container with dependencies
+├── docker-compose.yml           # Container orchestration
+├── .env                         # Environment variables 
+├── .gitignore                   # Files git will ignore
+└── terraform/                   
+    ├── main.tf                  # Main Databricks resources
+    ├── variables.tf             # Variable definitions
+    └── notebooks/               # Processing logic
+        ├── api_ingestion.py     # API data ingestion pipeline
+        └── db_ingestion.py      # Database ingestion pipeline
+```
+
 ## Getting started
 
 ### Prerequisites
@@ -108,22 +127,4 @@ docker compose run --rm terraform validate
 
 # Apply infrastructure
 docker compose run --rm terraform apply -auto-approve
-```
-
-## Project structure
-
-```
-aw-lh-checkpoint/
-├── README.md                    
-├── deploy.sh                    # Automated deployment script
-├── Dockerfile                   # Terraform container with dependencies
-├── docker-compose.yml           # Container orchestration
-├── .env                         # Environment variables 
-├── .gitignore                   # Files git will ignore
-└── terraform/                   
-    ├── main.tf                  # Main Databricks resources
-    ├── variables.tf             # Variable definitions
-    └── notebooks/               # Processing logic
-        ├── api_ingestion.py     # API data ingestion pipeline
-        └── db_ingestion.py      # Database ingestion pipeline
 ```

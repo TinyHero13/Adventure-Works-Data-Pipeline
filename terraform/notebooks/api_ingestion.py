@@ -18,7 +18,7 @@ URL = dbutils.secrets.get(scope="app-credentials", key="API_URL")
 USER = dbutils.secrets.get(scope="app-credentials", key="API_USER")
 PASSWORD = dbutils.secrets.get(scope="app-credentials", key="API_PASSWORD")
 
-MAX_WORKERS = 10
+MAX_WORKERS = 4
 BATCH_SIZE = 100000
 DEFAULT_LIMIT = 5
 MAX_RETRIES = 10

@@ -146,7 +146,42 @@ The development process utilized a structured approach with clearly defined bran
 The project development followed this Git workflow:
 
 ```mermaid
-gitGraph:
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#00d4aa',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#00b894',
+    'lineColor': '#6c7b7f',
+    'secondaryColor': '#0984e3',
+    'tertiaryColor': '#00cec9',
+    'background': '#0d1117',
+    'mainBranch': '#00d4aa',
+    'secondBranch': '#00cec9',
+    'c0': '#00d4aa',
+    'c1': '#00cec9',
+    'c2': '#74b9ff',
+    'c3': '#0984e3',
+    'c4': '#00b894',
+    'c5': '#55a3ff',
+    'c6': '#81ecec',
+    'cScale0': '#ffffff',
+    'cScale1': '#ffffff',
+    'cScale2': '#ffffff',
+    'git0': '#00d4aa',
+    'git1': '#00cec9',
+    'git2': '#74b9ff',
+    'git3': '#0984e3',
+    'gitBranchLabel0': '#ffffff',
+    'gitBranchLabel1': '#ffffff',
+    'gitBranchLabel2': '#ffffff',
+    'gitBranchLabel3': '#ffffff',
+    'commitLabelFontSize': '10px',
+    'commitLabelColor': '#ffffff'
+  }
+}}%%
+
+gitGraph
     commit id: "Initial setup"
     branch develop
     checkout develop
@@ -156,7 +191,7 @@ gitGraph:
     commit id: "API implementation"
     
     checkout develop
-    branch feature/db_ingestion  
+    branch feature/db_ingestion
     checkout feature/db_ingestion
     commit id: "DB implementation"
     
@@ -167,13 +202,12 @@ gitGraph:
     branch feature/containerized-notebooks-terraform
     checkout feature/containerized-notebooks-terraform
     commit id: "Add Docker & Terraform"
-
+    
     checkout develop
     merge feature/containerized-notebooks-terraform
-
+    
     checkout main
     merge develop
-
 ```
 ### Hotfix 
 

@@ -15,7 +15,6 @@ CONNECTION_PROPERTIES = {
 MAX_WORKERS = 15
 EXCLUDED_SCHEMAS = ['dbo', 'sys', 'information_schema']
 TABLE_PREFIX = 'raw_db'
-DEFAULT_SAVE_MODE = 'overwrite'
 
 # COMMAND ----------
 
@@ -79,7 +78,7 @@ def save_table(df, schema, table) -> None:
     """
 
     try:
-        df.write.format("delta").mode(DEFAULT_SAVE_MODE).saveAsTable(
+        df.write.format("delta").mode('overwrite').saveAsTable(
             f'{PATH_OUTPUT}.{TABLE_PREFIX}_{schema}_{table}')
     except Exception as e:
         raise RuntimeError(f"Error to save {schema}.{table}: {e}") from e

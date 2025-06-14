@@ -1,4 +1,4 @@
-# Adventure Works data ingestion pipeline
+# Data ingestion pipeline
 
 A data ingestion pipeline that extracts data from multiple sources API and SQL Server database and loads it into Databricks Delta Lake tables.
 
@@ -66,24 +66,41 @@ aw-lh-checkpoint/
 
 ### Prerequisites
 
-- Docker and Docker Compose installed
-- Access to Azure Databricks workspace
-- Databricks personal access token
+- **Docker and Docker Compose** ([Installation guide](https://docs.docker.com/engine/install/))
+- **Git** ([Git download](https://git-scm.com/downloads))
+- **Access to Azure Databricks workspace**
+- **Databricks personal access token** ([How to create personal access token](https://docs.databricks.com/aws/en/dev-tools/auth/pat))
 
-### Environment configuration
+### Dependencies
 
-1. Clone the repository:
+All project dependencies are containerized and automatically managed:
+- **Terraform**: Infrastructure provisioning
+- **Databricks Provider**: Databricks resource management
+- **PySpark**: Provided by Databricks runtime
+- **Python Requests**: API connectivity
+- **SQL Server JDBC Driver**: Database connectivity
+
+### Environment Setup
+
+1. **Clone the repository**
 ```bash
 git clone <repository-url>
 cd aw-lh-checkpoint
 ```
 
-2. Create environment file:
+2. **Verify Docker installation**
 ```bash
-cp .env.example .env
+docker --version
+docker compose version
 ```
 
-3. Configure `.env` file with your credentials:
+3. **Configure environment**
+```bash
+cp .env.example .env
+# Edit .env with your credentials
+```
+
+4. **Configure `.env` file with your credentials**
 ```bash
 # Databricks configuration
 DATABRICKS_HOST=https://adb-xxxxxxxxx.x.azuredatabricks.net
@@ -104,9 +121,16 @@ OUTPUT_PATH=/Workspace/Users/your.email@domain.com/WORKSPACE_NAME
 PATH_TABLE_OUTPUT=catalog_name.schema_name
 ```
 
+5. **Validate environment**
+```bash
+# Test Docker Compose configuration
+docker compose config
+```
+
+
 ## Deployment
 
-### Automated deployment 
+### Option 1: automated deployment (recommended)
 
 ```bash
 # Grant execution permission
@@ -114,9 +138,12 @@ chmod +x deploy.sh
 
 # Execute complete deployment
 ./deploy.sh
+
+# Verify deployment
+docker compose run --rm terraform show
 ```
 
-### Manual deployment
+### Option 2: manual deployment
 
 ```bash
 # Initialize Terraform
@@ -127,6 +154,36 @@ docker compose run --rm terraform validate
 
 # Apply infrastructure
 docker compose run --rm terraform apply -auto-approve
+
+# Verify resource creation
+docker compose run --rm terraform output
+```
+### Pipeline configuration
+
+The pipeline performance settings are currently in the notebook scripts and can be modified by editing the Python files:
+
+In `terraform/notebooks/api_ingestion.py`:
+```python
+MAX_WORKERS = 4              # Parallel endpoint workers
+MAX_OFFSET_WORKERS = 3       # Parallel offset workers per endpoint
+BATCH_SIZE = 100000          # Records per API request
+DEFAULT_LIMIT = 5            # Records for schema detection
+MAX_RETRIES = 30             # Maximum retry attempts
+TIMEOUT = 15                 # Request timeout in seconds
+TABLE_PREFIX = 'raw_api'     # Prefix for Delta Lake tables
+ENDPOINTS = [                # API endpoints to process
+    'SalesOrderHeader',
+    'PurchaseOrderDetail', 
+    'PurchaseOrderHeader',
+    'SalesOrderDetail'
+]
+```
+
+In `terraform/notebooks/db_ingestion.py`:
+```python
+MAX_WORKERS = 15             # Parallel table processing workers
+EXCLUDED_SCHEMAS = ['dbo', 'sys', 'information_schema']  # Schemas to ignore
+TABLE_PREFIX = 'raw_db'      # Prefix for Delta Lake tables
 ```
 
 ## Git workflow
@@ -208,10 +265,11 @@ gitGraph
     
     checkout main
     merge develop
-```
-### Hotfix 
+````
 
+## Hotfix
 While no hotfixes were needed during development, the workflow supports emergency fixes:
-- Direct branches from `main` for critical production issues
+
+- Direct branches from main for critical production issues
 - Fast-track merge process for urgent deployments
-- Automatic back-merge to `develop` to maintain consistency
+- Automatic back-merge to develop to maintain consistency

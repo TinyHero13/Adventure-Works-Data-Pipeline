@@ -19,9 +19,11 @@ USER = dbutils.secrets.get(scope="app-credentials", key="API_USER")
 PASSWORD = dbutils.secrets.get(scope="app-credentials", key="API_PASSWORD")
 
 MAX_WORKERS = 4
+MAX_OFFSET_WORKERS = 3
 BATCH_SIZE = 100000
 DEFAULT_LIMIT = 5
-MAX_RETRIES = 10
+MAX_RETRIES = 30
+TIMEOUT = 15
 TABLE_PREFIX = 'raw_api'
 ENDPOINTS = [
     'SalesOrderHeader',
@@ -180,7 +182,7 @@ def get_api_data(endpoint, offset, limit) -> Dict[str, Any]:
                 URL + endpoint,
                 params={'offset': offset, 'limit': limit},
                 auth=(USER, PASSWORD),
-                timeout=(5, 15)
+                timeout=(5, TIMEOUT)
             )
             response.raise_for_status()
             print(f'{endpoint} - {offset} completed')
@@ -280,11 +282,22 @@ def process_endpoint(endpoint_name) -> None:
 
         total_rows = response['total']
         offsets = list(range(0, total_rows, BATCH_SIZE))
-
+        
         api_data = []
-        for offset in offsets:
-            data = get_api_data(endpoint_name, offset, BATCH_SIZE)
-            api_data.append(data)
+        with ThreadPoolExecutor(max_workers=MAX_OFFSET_WORKERS) as offset_executor:
+
+            offset_futures = {
+                offset_executor.submit(get_api_data, endpoint_name, offset, BATCH_SIZE): offset
+                for offset in offsets
+            }
+            
+            for future in offset_futures:
+                offset = offset_futures[future]
+                try:
+                    data = future.result()
+                    api_data.append(data)
+                except RuntimeError as e:
+                    raise RuntimeError(f'Error processing offset {offset} for {endpoint_name}: {e}') from e
 
         if api_data:
             df = create_spark_df(api_data, schema_json)
@@ -308,6 +321,6 @@ def el_data_api() -> None:
             try:
                 future.result()
             except RuntimeError as e:
-                print(f'Failed to process {endpoint_name}: {e}')
+                raise RuntimeError(f'Failed to process {endpoint_name}: {e}') from e
 
 el_data_api()

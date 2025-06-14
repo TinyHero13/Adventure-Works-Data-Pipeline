@@ -85,23 +85,23 @@ cp .env.example .env
 
 3. Configure `.env` file with your credentials:
 ```bash
-# Databricks Configuration
+# Databricks configuration
 DATABRICKS_HOST=https://adb-xxxxxxxxx.x.azuredatabricks.net
 DATABRICKS_TOKEN=dapi********************************
 
-# API Configuration  
+# API configuration  
 API_URL=http://xxx.xxx.xxx.xxx:8080/
-API_USER=your_api_username
-API_PASSWORD=your_api_password
+API_USER=xxxxxx
+API_PASSWORD=********
 
-# Database Configuration
-DB_URL=jdbc:sqlserver://xxx.xxx.xxx.xxx:4563;databaseName=AdventureWorks;encrypt=false;trustServerCertificate=true
-DB_USER=your_db_username
-DB_PASSWORD=your_db_password
+# Database configuration
+DB_URL=jdbc:sqlserver://xxx.xxx.xxx.xxx:4563;databaseName=xxxx;encrypt=false;trustServerCertificate=true
+DB_USER=xxxxxx
+DB_PASSWORD=********
 
-# Output Configuration
-OUTPUT_PATH=/Workspace/Users/your.email@domain.com/PROJECT_NAME
-PATH_TABLE_OUTPUT=your_catalog.your_schema
+# Output configuration
+OUTPUT_PATH=/Workspace/Users/your.email@domain.com/WORKSPACE_NAME
+PATH_TABLE_OUTPUT=catalog_name.schema_name
 ```
 
 ## Deployment
@@ -128,3 +128,90 @@ docker compose run --rm terraform validate
 # Apply infrastructure
 docker compose run --rm terraform apply -auto-approve
 ```
+
+## Git workflow
+
+This project was developed following a Git Flow branching strategy with parallel feature development.
+
+## Branching strategy
+The development process utilized a structured approach with clearly defined branch purposes:
+
+- main: production code with stable releases
+- develop: integration branch for ongoing development
+- feature/*: individual feature development in isolation
+- Feature branches: feature/api_ingestion, feature/db_ingestion, feature/containerized-notebooks-terraform
+
+### Development workflow
+
+The project development followed this Git workflow:
+
+```mermaid
+%%{init: {
+  'theme': 'base',
+  'themeVariables': {
+    'primaryColor': '#00d4aa',
+    'primaryTextColor': '#ffffff',
+    'primaryBorderColor': '#00b894',
+    'lineColor': '#6c7b7f',
+    'secondaryColor': '#0984e3',
+    'tertiaryColor': '#00cec9',
+    'background': '#0d1117',
+    'mainBranch': '#00d4aa',
+    'secondBranch': '#00cec9',
+    'c0': '#00d4aa',
+    'c1': '#00cec9',
+    'c2': '#74b9ff',
+    'c3': '#0984e3',
+    'c4': '#00b894',
+    'c5': '#55a3ff',
+    'c6': '#81ecec',
+    'cScale0': '#ffffff',
+    'cScale1': '#ffffff',
+    'cScale2': '#ffffff',
+    'git0': '#00d4aa',
+    'git1': '#00cec9',
+    'git2': '#74b9ff',
+    'git3': '#0984e3',
+    'gitBranchLabel0': '#ffffff',
+    'gitBranchLabel1': '#ffffff',
+    'gitBranchLabel2': '#ffffff',
+    'gitBranchLabel3': '#ffffff',
+    'commitLabelFontSize': '10px',
+    'commitLabelColor': '#ffffff'
+  }
+}}%%
+
+gitGraph
+    commit id: "Initial setup"
+    branch develop
+    checkout develop
+    
+    branch feature/api_ingestion
+    checkout feature/api_ingestion
+    commit id: "API implementation"
+    
+    checkout develop
+    branch feature/db_ingestion
+    checkout feature/db_ingestion
+    commit id: "DB implementation"
+    
+    checkout develop
+    merge feature/api_ingestion
+    merge feature/db_ingestion
+    
+    branch feature/containerized-notebooks-terraform
+    checkout feature/containerized-notebooks-terraform
+    commit id: "Add Docker & Terraform"
+    
+    checkout develop
+    merge feature/containerized-notebooks-terraform
+    
+    checkout main
+    merge develop
+```
+### Hotfix 
+
+While no hotfixes were needed during development, the workflow supports emergency fixes:
+- Direct branches from `main` for critical production issues
+- Fast-track merge process for urgent deployments
+- Automatic back-merge to `develop` to maintain consistency

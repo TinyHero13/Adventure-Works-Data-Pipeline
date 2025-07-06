@@ -1,0 +1,31 @@
+[0m13:05:23.734635 [debug] [MainThread]: Got an exception trying to initialize tracking
+
+
+============================== 13:05:23.746293 | 07a3a053-d905-4acf-b318-4ca5ee6057c8 ==============================
+[0m13:05:23.746293 [info ] [MainThread]: Running with dbt=1.10.3
+[0m13:05:23.747421 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'profiles_dir': '/home/mim/.dbt', 'log_path': 'logs', 'debug': 'False', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'log_format': 'default', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'invocation_command': 'dbt init', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m13:05:33.324213 [debug] [MainThread]: Starter project path: /home/mim/projects/lighthouse/checkpoint3/AW-LH-CHECKPOINT/aw_transform-ae/.venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m13:05:33.333899 [info ] [MainThread]: 
+Your new dbt project "aw_transform" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m13:05:33.334418 [info ] [MainThread]: Setting up your profile.
+[0m13:05:36.567589 [debug] [MainThread]: Spark adapter: Setting pyhive.hive logging to ERROR
+[0m13:05:36.568077 [debug] [MainThread]: Spark adapter: Setting thrift.transport logging to ERROR
+[0m13:05:36.568419 [debug] [MainThread]: Spark adapter: Setting thrift.protocol logging to ERROR
+[0m13:10:31.917443 [info ] [MainThread]: Profile aw_transform written to /home/mim/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m13:10:31.927104 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 308.25812, "process_in_blocks": "3824", "process_kernel_time": 0.822575, "process_mem_max_rss": "235016", "process_out_blocks": "80", "process_user_time": 3.698514}
+[0m13:10:31.932484 [debug] [MainThread]: Command `dbt init` succeeded at 13:10:31.932016 after 308.26 seconds
+[0m13:10:31.934183 [debug] [MainThread]: Flushing usage events

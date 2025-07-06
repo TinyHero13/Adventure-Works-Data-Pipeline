@@ -11,6 +11,11 @@ provider "databricks" {
   token    = var.databricks_token
 }
 
+resource "databricks_secret_scope" "app_credentials" {
+  name = "app-credentials"
+  initial_manage_principal = "users"
+}
+
 resource "databricks_notebook" "api_ingestion" {
   path     = "${var.output_path}/api_ingestion"
   language = "PYTHON"

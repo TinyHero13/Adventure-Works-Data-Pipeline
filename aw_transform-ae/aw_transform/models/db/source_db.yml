@@ -9,3 +9,7 @@ sources:
       - name: sales_reason
         identifier: raw_db_sales_salesreason
         description: staging table for sales reason
+      
+      - name: sales_territory
+        identifier: raw_db_sales_salesterritory
+        description: staging table for sales territory

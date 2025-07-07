@@ -10,3 +10,5 @@ Then
 ```
 dbt init
 ```
+
+To start dbt setup

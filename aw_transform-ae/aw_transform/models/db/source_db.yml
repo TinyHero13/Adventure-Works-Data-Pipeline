@@ -17,3 +17,7 @@ sources:
       - name: customer
         identifier: raw_db_sales_customer
         description: staging table for customer
+
+      - name: sales_person
+        identifier: raw_db_sales_salesperson
+        description: staging table for sales person

@@ -13,3 +13,7 @@ sources:
       - name: sales_territory
         identifier: raw_db_sales_salesterritory
         description: staging table for sales territory
+
+      - name: customer
+        identifier: raw_db_sales_customer
+        description: staging table for customer

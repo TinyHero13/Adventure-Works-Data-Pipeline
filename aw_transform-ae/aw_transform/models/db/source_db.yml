@@ -21,3 +21,7 @@ sources:
       - name: sales_person
         identifier: raw_db_sales_salesperson
         description: staging table for sales person
+
+      - name: product
+        identifier: raw_db_production_product
+        description: staging table for product

@@ -2,26 +2,26 @@ version: 2
 
 sources:
   - name: source_db
-    description: Source database for staging models
+    description: "Source database for staging models"
     database: ted_dev
     schema: dev_yasmim_lima
     tables:
       - name: sales_reason
         identifier: raw_db_sales_salesreason
-        description: staging table for sales reason
+        description: "staging table for sales reason"
       
       - name: sales_territory
         identifier: raw_db_sales_salesterritory
-        description: staging table for sales territory
+        description: "staging table for sales territory"
 
       - name: customer
         identifier: raw_db_sales_customer
-        description: staging table for customer
+        description: "staging table for customer"
 
       - name: sales_person
         identifier: raw_db_sales_salesperson
-        description: staging table for sales person
+        description: "staging table for sales person"
 
       - name: product
         identifier: raw_db_production_product
-        description: staging table for product
+        description: "staging table for product"

@@ -7,8 +7,6 @@ with sales_territory as (
         , saleslastyear as sales_last_year
         , costytd as cost_ytd
         , costlastyear as cost_last_year
-        , rowguid as row_guid
-        , to_date(modifieddate, 'MM/DD/YYYY') as modified_date
     from {{ source('source_db', 'sales_territory') }}
 )
 

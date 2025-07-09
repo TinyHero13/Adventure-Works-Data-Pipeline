@@ -22,8 +22,6 @@ with product as (
         , to_date(sellstartdate, 'MM/DD/YYYY') as sell_start_date
         , to_date(sellenddate, 'MM/DD/YYYY') as sell_end_date
         , to_date(discontinueddate, 'MM/DD/YYYY') as discontinued_date
-        , rowguid as row_guid
-        , to_date(modifieddate, 'MM/DD/YYYY') as modified_date
     from {{ source('source_db', 'product') }}
 )
 

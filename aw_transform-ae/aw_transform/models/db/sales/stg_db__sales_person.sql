@@ -7,8 +7,6 @@ with sales_person as (
         , cast(commissionpct as numeric(19,4)) as commission_pct
         , cast(salesytd as numeric(19,4)) as sales_ytd
         , cast(saleslastyear as numeric(19,4)) as sales_last_year
-        , rowguid as row_guid
-        , to_date(modifieddate, 'MM/DD/YYYY') as modified_date
     from {{ source('source_db', 'sales_person') }}
 )
 

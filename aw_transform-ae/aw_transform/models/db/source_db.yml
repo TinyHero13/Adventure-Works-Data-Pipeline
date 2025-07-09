@@ -24,6 +24,10 @@ sources:
         identifier: raw_db_sales_salesperson
         description: "staging table for sales person"
 
+      - name: sales_order_detail
+        identifier: raw_db_sales_salesorderdetail
+        description: "staging table for sales order detail"
+
 # Production schema
       - name: product
         identifier: raw_db_production_product

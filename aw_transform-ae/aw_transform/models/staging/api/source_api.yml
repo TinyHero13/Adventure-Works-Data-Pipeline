@@ -14,3 +14,7 @@ sources:
       - name: sales_order_header
         identifier: raw_api_salesorderheader
         description: "staging table for sales order header"
+
+      - name: purchase_order_detail
+        identifier: raw_api_purchaseorderdetail
+        description: "staging table for purchase order detail"

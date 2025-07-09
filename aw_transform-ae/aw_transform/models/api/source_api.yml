@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: source_api
+    description: "Source from API for staging models"
+    database: ted_dev
+    schema: dev_yasmim_lima
+    tables:
+
+      - name: sales_order_detail
+        identifier: raw_api_salesorderdetail
+        description: "staging table for sales order detail"

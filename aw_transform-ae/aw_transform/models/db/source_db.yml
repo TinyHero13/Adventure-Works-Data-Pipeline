@@ -6,6 +6,8 @@ sources:
     database: ted_dev
     schema: dev_yasmim_lima
     tables:
+
+# Sales schema
       - name: sales_reason
         identifier: raw_db_sales_salesreason
         description: "staging table for sales reason"
@@ -22,6 +24,11 @@ sources:
         identifier: raw_db_sales_salesperson
         description: "staging table for sales person"
 
+# Production schema
       - name: product
         identifier: raw_db_production_product
         description: "staging table for product"
+
+      - name: product_category
+        identifier: raw_db_production_productcategory
+        description: "staging table for product category"

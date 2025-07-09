@@ -10,3 +10,7 @@ sources:
       - name: sales_order_detail
         identifier: raw_api_salesorderdetail
         description: "staging table for sales order detail"
+
+      - name: sales_order_header
+        identifier: raw_api_salesorderheader
+        description: "staging table for sales order header"

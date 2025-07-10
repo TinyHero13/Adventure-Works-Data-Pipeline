@@ -28,6 +28,9 @@ sources:
         identifier: raw_db_sales_salesorderdetail
         description: "staging table for sales order detail"
 
+      - name: sales_order_header
+        identifier: raw_db_sales_salesorderheader
+        description: "staging table for sales order header"
 # Production schema
       - name: product
         identifier: raw_db_production_product

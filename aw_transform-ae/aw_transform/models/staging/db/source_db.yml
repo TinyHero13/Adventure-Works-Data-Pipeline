@@ -43,3 +43,7 @@ sources:
       - name: product_subcategory
         identifier: raw_db_production_productsubcategory
         description: "staging table for product subcategory"
+
+      - name: person
+        identifier: raw_db_person_person
+        description: "staging table for person"

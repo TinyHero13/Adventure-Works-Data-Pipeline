@@ -5,8 +5,6 @@ with sales_territory as (
         , countryregioncode as country_region_code
         , salesytd as sales_ytd
         , saleslastyear as sales_last_year
-        , costytd as cost_ytd
-        , costlastyear as cost_last_year
     from {{ source('source_db', 'sales_territory') }}
 )
 

@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: stg_db__sales_person
+    description: "Staging model for sales person data"
+    columns:
+      - name: business_entity_id
+        data_type: int
+        description: "Primary key for the sales person"
+
+      - name: territory_id
+        data_type: int
+        description: "Foreign key to territory"
+
+      - name: sales_quota
+        data_type: numeric(19,4)
+        description: "Sales quota"
+
+      - name: bonus
+        data_type: numeric(19,4)
+        description: "Bonus amount"
+
+      - name: commission_pct
+        data_type: numeric(19,4)
+        description: "Commission percentage"
+
+      - name: sales_ytd
+        data_type: numeric(19,4)
+        description: "Sales year to date"
+
+      - name: sales_last_year
+        data_type: numeric(19,4)
+        description: "Sales last year"

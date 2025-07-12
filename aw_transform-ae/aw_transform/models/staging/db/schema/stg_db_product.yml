@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: stg_db__product
+    description: "Staging model for product data"
+    columns:
+      - name: product_id
+        data_type: int
+        description: "Primary key for the product"
+
+      - name: name
+        data_type: varchar
+        description: "Name of the product"
+
+      - name: product_number
+        data_type: varchar
+        description: "Product number"
+
+      - name: make_flag
+        data_type: varchar
+        description: "Indicates if product is made or purchased"
+
+      - name: finished_goods_flag
+        data_type: varchar
+        description: "Indicates if product is finished"
+
+      - name: color
+        data_type: varchar
+        description: "Color of the product"
+
+      - name: safety_stock_level
+        data_type: int
+        description: "Minimum inventory quantity"
+
+      - name: reorder_point
+        data_type: int
+        description: "Inventory level that triggers a purchase order or work order."
+
+      - name: list_price
+        data_type: decimal(19,4)
+        description: "List price of the product"
+
+      - name: size
+        data_type: varchar
+        description: "Size of the product"
+
+      - name: size_unit_measure_code
+        data_type: varchar
+        description: "Unit of measure for size column"
+
+      - name: weight
+        data_type: decimal(8,2)
+        description: "Weight of the product"
+
+      - name: weight_unit_measure_code
+        data_type: varchar
+        description: "Unit of measure for weight column"
+
+      - name: days_to_manufacture
+        data_type: int
+        description: "Number of days required to manufacture the product"
+
+      - name: product_line
+        data_type: varchar
+        description: "Type of the product"
+
+      - name: class
+        data_type: varchar
+        description: "Class of the product"
+
+      - name: style
+        data_type: varchar
+        description: "Style of the product"
+
+      - name: product_subcategory_id
+        data_type: int
+        description: "Foreign key to product subcategory"
+
+      - name: sell_start_date
+        data_type: date
+        description: "Start date for selling the product"
+
+      - name: sell_end_date
+        data_type: date
+        description: "End date for selling the product"
+
+      - name: discontinued_date
+        data_type: date
+        description: "Date when product was discontinued"

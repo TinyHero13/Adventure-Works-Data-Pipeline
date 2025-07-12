@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: stg_db__sales_order_header
+    description: "Staging model for sales order header data"
+    columns:
+      - name: sales_order_id
+        data_type: int
+        description: "Primary key for the sales order"
+
+      - name: account_number
+        data_type: varchar
+        description: "Account number"
+
+      - name: credit_card_id
+        data_type: int
+        description: "Foreign key to credit card"
+
+      - name: customer_id
+        data_type: int
+        description: "Foreign key to customer"
+
+      - name: due_date
+        data_type: date
+        description: "Due date for the order"
+
+      - name: freight
+        data_type: numeric(19,4)
+        description: "Description	Shipping cost"
+
+      - name: online_order_flag
+        data_type: varchar
+        description: "Flag indicating if order was placed online"
+
+      - name: order_date
+        data_type: date
+        description: "Order date"
+
+      - name: purchase_order_number
+        data_type: varchar
+        description: "Purchase order number"
+
+      - name: revision_number
+        data_type: int
+        description: "Number to track changes to the sales order over time"
+
+      - name: sales_person_id
+        data_type: int
+        description: "Foreign key to sales person"
+
+      - name: ship_date
+        data_type: date
+        description: "Ship date"
+
+      - name: ship_method_id
+        data_type: int
+        description: "Foreign key to ship method"
+
+      - name: ship_to_address_id
+        data_type: int
+        description: "Foreign key to ship to address"

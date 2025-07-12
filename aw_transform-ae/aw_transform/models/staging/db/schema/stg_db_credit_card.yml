@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: stg_db__credit_card
+    description: "Staging model for credit card data"
+    columns:
+      - name: credit_card_id
+        data_type: int
+        description: "Primary key for the credit card"
+
+      - name: card_type
+        data_type: varchar
+        description: "Type of credit card"

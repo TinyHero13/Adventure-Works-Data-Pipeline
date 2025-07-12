@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: stg_api__sales_order_detail
+    description: "Staging model for sales order detail data"
+    columns:
+      - name: sales_order_detail_id
+        data_type: int
+        description: "Primary key for the sales order detail"
+
+      - name: sales_order_id
+        data_type: int
+        description: "Foreign key to sales order header"
+
+      - name: carrier_tracking_number
+        data_type: varchar
+        description: "Shipment tracking number"
+
+      - name: product_id
+        data_type: int
+        description: "Foreign key to product"
+
+      - name: order_quantity
+        data_type: int
+        description: "Order quantity"
+
+      - name: unit_price
+        data_type: numeric(19,4)
+        description: "Unit price"
+
+      - name: unit_price_discount
+        data_type: numeric(19,4)
+        description: "Unit price discount"
+
+      - name: line_total
+        data_type: numeric(38,6)
+        description: "Per product subtotal. Computed as UnitPrice * (1 - UnitPriceDiscount) * OrderQty"

@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_db_customer
+    description: "Staging model for customer data"
+    columns:
+      - name: customer_id
+        data_type: int
+        description: "Primary key for the customer"
+
+      - name: person_id
+        data_type: int
+        description: "Foreign key to person table"
+        
+      - name: territory_id
+        data_type: int
+        description: "Foreign key to territory table"

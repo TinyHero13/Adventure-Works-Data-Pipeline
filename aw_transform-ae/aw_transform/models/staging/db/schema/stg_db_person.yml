@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_db__person
+    description: "Staging model for person data"
+    columns:
+      - name: business_entity_id
+        data_type: int
+        description: "Primary key for the person"
+
+      - name: person_type
+        data_type: varchar
+        description: "Type of person"
+
+      - name: full_name
+        data_type: varchar
+        description: "Full name of the person"

@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_db__state_province
+    description: "Staging model for state province data"
+    columns:
+      - name: state_province_id
+        data_type: int
+        description: "Primary key for the state province"
+
+      - name: country_region_code
+        data_type: varchar
+        description: "Country region code"
+
+      - name: name
+        data_type: varchar
+        description: "Name of the state or province"
+
+      - name: territory_id
+        data_type: int
+        description: "Foreign key to territory"

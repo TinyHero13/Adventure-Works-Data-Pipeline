@@ -58,3 +58,7 @@ sources:
       - name: state_province
         identifier: raw_db_person_stateprovince
         description: "staging table for state province"
+
+      - name: country_region
+        identifier: raw_db_person_countryregion
+        description: "staging table for country region"

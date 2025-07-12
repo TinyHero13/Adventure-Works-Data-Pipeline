@@ -1,7 +1,7 @@
 with product as (
     select
         cast(productid as int) as product_id
-        , name
+        , name as product_name
         , productnumber as product_number
         , case 
             when makeflag = false then 'Purchased'

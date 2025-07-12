@@ -8,6 +8,6 @@ models:
         data_type: int
         description: "Primary key for the sales reason"
 
-      - name: name
+      - name: sales_reason_name
         data_type: varchar
         description: "Reason for sales"

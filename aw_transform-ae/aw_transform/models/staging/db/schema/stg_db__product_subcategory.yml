@@ -12,6 +12,6 @@ models:
         data_type: int
         description: "Foreign key to product category"
 
-      - name: name
+      - name: product_subcategory_name
         data_type: varchar
         description: "Name of the product subcategory"

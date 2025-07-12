@@ -8,6 +8,6 @@ models:
         data_type: int
         description: "Primary key for the product category"
 
-      - name: name
+      - name: product_category_name
         data_type: varchar
         description: "Name of the product category"

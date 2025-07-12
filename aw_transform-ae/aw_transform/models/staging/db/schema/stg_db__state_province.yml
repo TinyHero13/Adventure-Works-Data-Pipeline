@@ -12,7 +12,7 @@ models:
         data_type: varchar
         description: "Country region code"
 
-      - name: name
+      - name: state_province_name
         data_type: varchar
         description: "Name of the state or province"
 

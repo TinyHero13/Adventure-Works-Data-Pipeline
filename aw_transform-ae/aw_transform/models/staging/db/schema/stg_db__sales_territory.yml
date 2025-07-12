@@ -8,7 +8,7 @@ models:
         data_type: int
         description: "Primary key for the territory"
 
-      - name: name
+      - name: territory_name
         data_type: varchar
         description: "Name of the territory"
 

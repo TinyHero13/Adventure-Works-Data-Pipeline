@@ -8,7 +8,7 @@ with person as (
             when 'EM' then 'Employee (non-sales)'
             when 'VC' then 'Vendor contact'
             when 'GC' then 'General contact'
-            else 'Unknown'
+            else 'Other'
         end as person_type
         , firstname || ' ' || middlename || ' ' || lastname as full_name
     from {{ source('source_db', 'person') }}

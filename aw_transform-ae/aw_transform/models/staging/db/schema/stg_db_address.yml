@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_db__address
+    description: "Staging model for address data"
+    columns:
+      - name: address_id
+        data_type: int
+        description: "Primary key for the address"
+
+      - name: city
+        data_type: varchar
+        description: "City name"
+
+      - name: state_province_id
+        data_type: int
+        description: "Foreign key to state province"

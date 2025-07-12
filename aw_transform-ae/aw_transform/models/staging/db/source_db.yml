@@ -7,7 +7,6 @@ sources:
     schema: dev_yasmim_lima
     tables:
 
-# Sales schema
       - name: sales_reason
         identifier: raw_db_sales_salesreason
         description: "staging table for sales reason"
@@ -36,7 +35,6 @@ sources:
         identifier: raw_db_sales_creditcard
         description: "staging table for credit card"
 
-# Production schema
       - name: product
         identifier: raw_db_production_product
         description: "staging table for product"
@@ -52,3 +50,7 @@ sources:
       - name: person
         identifier: raw_db_person_person
         description: "staging table for person"
+
+      - name: address
+        identifier: raw_db_person_address
+        description: "staging table for address"

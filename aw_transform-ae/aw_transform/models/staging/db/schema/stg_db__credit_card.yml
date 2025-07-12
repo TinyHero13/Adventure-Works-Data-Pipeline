@@ -7,7 +7,12 @@ models:
       - name: credit_card_id
         data_type: int
         description: "Primary key for the credit card"
+        tests:
+          - unique
+          - not_null
 
       - name: card_type
         data_type: varchar
         description: "Type of credit card"
+        tests:
+          - not_null

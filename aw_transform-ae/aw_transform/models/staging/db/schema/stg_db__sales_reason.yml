@@ -7,7 +7,12 @@ models:
       - name: sales_reason_id
         data_type: int
         description: "Primary key for the sales reason"
+        tests:
+          - unique
+          - not_null
 
       - name: sales_reason_name
         data_type: varchar
-        description: "Reason for sales"
+        description: "Name of the sales reason"
+        tests:
+          - not_null

@@ -7,7 +7,12 @@ models:
       - name: country_region_code
         data_type: varchar
         description: "Primary key code for the country region"
+        tests:
+          - unique
+          - not_null
 
       - name: country_region_name
         data_type: varchar
         description: "Name of the country region"
+        tests:
+          - not_null

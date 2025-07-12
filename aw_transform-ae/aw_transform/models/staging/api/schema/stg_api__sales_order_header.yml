@@ -2,11 +2,14 @@ version: 2
 
 models:
   - name: stg_api__sales_order_header
-    description: "Staging model for sales order header data"
+    description: "Staging model for API sales order header data"
     columns:
       - name: sales_order_id
         data_type: int
         description: "Primary key for the sales order"
+        tests:
+          - unique
+          - not_null
 
       - name: account_number
         data_type: varchar
@@ -19,6 +22,11 @@ models:
       - name: customer_id
         data_type: int
         description: "Foreign key to customer"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_db_customer')
+              field: customer_id
 
       - name: due_date
         data_type: date
@@ -26,7 +34,10 @@ models:
 
       - name: freight
         data_type: numeric(19,4)
-        description: "Description	Shipping cost"
+        description: "Shipping cost"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
 
       - name: online_order_flag
         data_type: varchar
@@ -35,6 +46,8 @@ models:
       - name: order_date
         data_type: date
         description: "Order date"
+        tests:
+          - not_null
 
       - name: purchase_order_number
         data_type: varchar
@@ -43,6 +56,9 @@ models:
       - name: revision_number
         data_type: int
         description: "Number to track changes to the sales order over time"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
 
       - name: sales_person_id
         data_type: int

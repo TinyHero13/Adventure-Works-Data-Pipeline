@@ -7,15 +7,29 @@ models:
       - name: state_province_id
         data_type: int
         description: "Primary key for the state province"
+        tests:
+          - unique
+          - not_null
 
       - name: country_region_code
         data_type: varchar
         description: "Country region code"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_db__country_region')
+              field: country_region_code
 
       - name: state_province_name
         data_type: varchar
         description: "Name of the state or province"
+        tests:
+          - not_null
 
       - name: territory_id
         data_type: int
         description: "Foreign key to territory"
+        tests:
+          - relationships:
+              to: ref('stg_db__sales_territory')
+              field: territory_id

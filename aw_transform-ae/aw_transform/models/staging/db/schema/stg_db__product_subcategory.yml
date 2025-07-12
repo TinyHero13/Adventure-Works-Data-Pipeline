@@ -7,11 +7,21 @@ models:
       - name: product_subcategory_id
         data_type: int
         description: "Primary key for the product subcategory"
+        tests:
+          - unique
+          - not_null
 
       - name: product_category_id
         data_type: int
         description: "Foreign key to product category"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_db__product_category')
+              field: product_category_id
 
       - name: product_subcategory_name
         data_type: varchar
         description: "Name of the product subcategory"
+        tests:
+          - not_null

@@ -7,11 +7,21 @@ models:
       - name: address_id
         data_type: int
         description: "Primary key for the address"
+        tests:
+          - unique
+          - not_null
 
       - name: city
         data_type: varchar
         description: "City name"
+        tests:
+          - not_null
 
       - name: state_province_id
         data_type: int
         description: "Foreign key to state province"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_db__state_province')
+              field: state_province_id

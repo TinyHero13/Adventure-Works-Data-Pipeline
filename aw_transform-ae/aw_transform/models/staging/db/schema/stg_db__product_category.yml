@@ -7,7 +7,12 @@ models:
       - name: product_category_id
         data_type: int
         description: "Primary key for the product category"
+        tests:
+          - unique
+          - not_null
 
       - name: product_category_name
         data_type: varchar
         description: "Name of the product category"
+        tests:
+          - not_null

@@ -1,17 +1,28 @@
 version: 2
 
 models:
-  - name: stg_db_customer
+  - name: stg_db__customer
     description: "Staging model for customer data"
     columns:
       - name: customer_id
         data_type: int
         description: "Primary key for the customer"
+        tests:
+          - unique
+          - not_null
 
       - name: person_id
         data_type: int
         description: "Foreign key to person table"
-        
+        tests:
+          - relationships:
+              to: ref('stg_db__person')
+              field: business_entity_id
+
       - name: territory_id
         data_type: int
         description: "Foreign key to territory table"
+        tests:
+          - relationships:
+              to: ref('stg_db__sales_territory')
+              field: territory_id

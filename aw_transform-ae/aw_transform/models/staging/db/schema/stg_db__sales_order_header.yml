@@ -11,10 +11,6 @@ models:
           - unique
           - not_null
 
-      - name: account_number
-        data_type: varchar
-        description: "Account number"
-
       - name: credit_card_id
         data_type: int
         description: "Foreign key to credit card"

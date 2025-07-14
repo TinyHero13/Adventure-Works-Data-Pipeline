@@ -1,7 +1,6 @@
 with sales_order_header as (
     select
         cast(salesorderid as int) as sales_order_id
-        , accountnumber as account_number
         , cast(creditcardid as int) as credit_card_id
         , cast(customerid as int) as customer_id
         , to_date(duedate, 'MM/DD/YYYY') as due_date

@@ -10,6 +10,10 @@ sources:
       - name: sales_reason
         identifier: raw_db_sales_salesreason
         description: "staging table for sales reason"
+
+      - name: sales_order_header_sales_reason
+        identifier: raw_db_sales_salesorderheadersalesreason
+        description: "staging table for sales order header reason"
       
       - name: sales_territory
         identifier: raw_db_sales_salesterritory

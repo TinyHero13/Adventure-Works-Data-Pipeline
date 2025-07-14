@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: stg_db__sales_territory
+    description: "Staging model for sales territory data"
+    columns:
+      - name: territory_id
+        data_type: int
+        description: "Primary key for the territory"
+        tests:
+          - unique
+          - not_null
+
+      - name: territory_name
+        data_type: varchar
+        description: "Name of the territory"
+        tests:
+          - not_null
+
+      - name: country_region_code
+        data_type: varchar
+        description: "Country region code"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_db__country_region')
+              field: country_region_code
+
+      - name: sales_ytd
+        data_type: numeric
+        description: "Sales year to date"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: sales_last_year
+        data_type: numeric
+        description: "Sales last year"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0

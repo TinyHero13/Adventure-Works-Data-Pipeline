@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_db__sales_reason
+    description: "Staging model for sales reason data"
+    columns:
+      - name: sales_reason_id
+        data_type: int
+        description: "Primary key for the sales reason"
+        tests:
+          - unique
+          - not_null
+
+      - name: sales_reason_name
+        data_type: varchar
+        description: "Name of the sales reason"
+        tests:
+          - not_null

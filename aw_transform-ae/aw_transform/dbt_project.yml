@@ -31,6 +31,8 @@ models:
   aw_transform:
     staging:
       materialized: ephemeral
+    intermediate:
+      materialized: ephemeral
 
 # Test configurations
 tests:

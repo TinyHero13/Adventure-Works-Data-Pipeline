@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Customer dimension table with enriched customer information"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for customer"
+        tests:
+          - not_null
+          - unique
+      - name: full_name
+        description: "Full name of the customer"
+        tests:
+          - not_null

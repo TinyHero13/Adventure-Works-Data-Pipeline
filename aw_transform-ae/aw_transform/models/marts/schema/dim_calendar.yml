@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: dim_calendar
+    description: "Calendar dimension table with date attributes and derived fields"
+    columns:
+      - name: date_sk
+        description: "Surrogate key for the date"
+        tests:
+          - not_null
+          - unique
+
+      - name: date_dim_id
+        description: "Date dimension ID in YYYYMMDD format"
+        tests:
+          - not_null
+          - unique
+
+
+      - name: date_actual
+        description: "The actual date"
+        tests:
+          - not_null
+
+
+      - name: reference_week
+        description: "Reference week for the date"
+
+
+      - name: reference_month
+        description: "Reference month for the date"
+
+      - name: epoch
+        description: "Unix timestamp for the date"
+
+
+      - name: day_suffix
+        description: "Day suffix (1st, 2nd, 3rd, etc.)"
+      - name: day_name
+        description: "Full name of the day"
+      - name: day_of_week
+        description: "Day of the week (1-7)"
+      - name: day_of_month
+        description: "Day of the month (1-31)"
+      - name: day_of_quarter
+        description: "Day of the quarter"
+      - name: day_of_year
+        description: "Day of the year (1-366)"
+      - name: week_of_month
+        description: "Week of the month"
+      - name: week_of_year
+        description: "Week of the year"
+      - name: week_of_year_iso
+        description: "ISO week of the year"
+
+      - name: month_actual
+        description: "Month number (1-12)"
+
+      - name: month_name
+        description: "Full name of the month"
+
+      - name: month_name_abbreviated
+        description: "Abbreviated name of the month"
+
+      - name: quarter_actual
+        description: "Quarter number (1-4)"
+
+      - name: quarter_name
+        description: "Quarter name (First, Second, etc.)"
+
+      - name: year_actual
+        description: "Year number"
+
+      - name: first_day_of_week
+        description: "First day of the week"
+
+      - name: last_day_of_week
+        description: "Last day of the week"
+
+      - name: first_day_of_month
+        description: "First day of the month"
+
+      - name: last_day_of_month
+        description: "Last day of the month"
+
+      - name: first_day_of_quarter
+        description: "First day of the quarter"
+
+      - name: last_day_of_quarter
+        description: "Last day of the quarter"
+
+      - name: first_day_of_year
+        description: "First day of the year"
+
+      - name: last_day_of_year
+        description: "Last day of the year"
+
+      - name: mmyyyy
+        description: "Month and year in MMYYYY format"
+
+      - name: mmddyyyy
+        description: "Month, day, and year in MMDDYYYY format"
+
+      - name: is_weekend_day
+        description: "Flag indicating if the date is a weekend"

@@ -30,9 +30,13 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
   aw_transform:
     staging:
-      materialized: ephemeral
+      +materialized: ephemeral
     intermediate:
-      materialized: ephemeral
+      +materialized: ephemeral
+    marts:
+      +materialized: table
+      +schema: marts
+
 
 # Test configurations
 tests:

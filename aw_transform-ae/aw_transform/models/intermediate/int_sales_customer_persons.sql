@@ -18,10 +18,10 @@ with
         select
             customers.customer_id as id_cliente
             , persons.full_name
-            , persons.person_type
         from customers
         left join persons
             on customers.customer_id = persons.business_entity_id
+        where persons.person_type = 'Individual (retail) customer'
 )
 
 select *

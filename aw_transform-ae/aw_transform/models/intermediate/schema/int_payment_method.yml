@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: int_payment_method
+    description: "Intermediate table for payment method dimensions combining credit card types into standardized payment methods"
+    columns:
+      - name: payment_method_id
+        description: "Unique identifier for payment method"
+        tests:
+          - not_null
+          - unique
+
+      - name: payment_method_name
+        description: "Name of the payment method (card type)"
+        tests:
+          - not_null

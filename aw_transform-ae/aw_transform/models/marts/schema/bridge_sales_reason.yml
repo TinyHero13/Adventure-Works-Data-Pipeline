@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: bridge_sales_reason
+    description: "Bridge table connecting sales orders to sales reasons (many-to-many relationship)"
+    columns:
+      - name: sales_order_id
+        description: "Sales order identifier"
+        tests:
+          - not_null
+
+      - name: sales_reason_id
+        description: "Sales reason identifier"
+        tests:
+          - not_null

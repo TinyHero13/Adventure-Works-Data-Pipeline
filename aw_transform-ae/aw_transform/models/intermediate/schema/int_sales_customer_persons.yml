@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: int_sales_customer_persons
+    description: "Intermediate table linking customers to person information"
+    columns:
+      - name: id_cliente
+        description: "Customer identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: full_name
+        description: "Full name of the customer"

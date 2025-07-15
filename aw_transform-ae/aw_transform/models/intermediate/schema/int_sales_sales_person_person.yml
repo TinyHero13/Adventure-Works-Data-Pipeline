@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: int_sales_sales_person_person
+    description: "Intermediate table combining sales person data with personal information and performance metrics"
+    columns:
+      - name: sales_person_id
+        description: "Unique identifier for sales person"
+        tests:
+          - not_null
+          - unique
+
+      - name: sales_person_name
+        description: "Full name of the sales person"
+
+      - name: person_type
+        description: "Type of person (Sales person, Employee, etc.)"
+
+      - name: sales_quota
+        description: "Sales quota assigned to the sales person"
+
+      - name: bonus
+        description: "Bonus amount earned"
+
+      - name: commission_pct
+        description: "Commission percentage"
+
+      - name: sales_ytd
+        description: "Sales year-to-date"
+
+      - name: sales_last_year
+        description: "Sales from last year"
+
+      - name: quota_achievement_pct
+        description: "Percentage of quota achieved"
+
+      - name: sales_growth_pct
+        description: "Sales growth percentage compared to last year"
+
+      - name: performance_tier
+        description: "Performance tier classification"
+
+      - name: sales_tier
+        description: "Sales tier based on YTD sales"
+
+      - name: coaching_priority
+        description: "Priority level for coaching based on performance"
+
+      - name: estimated_commission_earnings
+        description: "Estimated commission earnings"
+
+      - name: growth_risk_assessment
+        description: "Risk assessment based on growth trends"
+
+      - name: action_required
+        description: "Action required based on performance"
+
+      - name: sales_person_display_name
+        description: "Display name for reports"

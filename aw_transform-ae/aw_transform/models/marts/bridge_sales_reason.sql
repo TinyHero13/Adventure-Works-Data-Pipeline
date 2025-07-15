@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 with 
     sales_reason_bridge as (
         select * 

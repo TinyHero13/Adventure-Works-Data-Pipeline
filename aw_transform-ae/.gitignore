@@ -12,3 +12,5 @@ airflow.db
 logs
 target
 logs/*
+.astro
+.airflowignore

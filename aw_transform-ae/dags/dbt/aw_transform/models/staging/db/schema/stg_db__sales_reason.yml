@@ -4,7 +4,7 @@ models:
   - name: stg_db__sales_reason
     description: "Staging model for sales reason data"
     columns:
-      - name: sales_reason_id
+      - name: sales_reason_pk
         data_type: int
         description: "Primary key for the sales reason"
         tests:
@@ -16,3 +16,30 @@ models:
         description: "Name of the sales reason"
         tests:
           - not_null
+
+      - name: reason_type
+        data_type: varchar
+        description: "Type of the sales reason"
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"
+
+  - name: stg_db__sales_order_header_sales_reason
+    description: "Staging model for sales order header sales reason bridge data"
+    columns:
+      - name: sales_order_pk
+        data_type: int
+        description: "Foreign key to sales order header"
+        tests:
+          - not_null
+
+      - name: sales_reason_fk
+        data_type: int
+        description: "Foreign key to sales reason"
+        tests:
+          - not_null
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

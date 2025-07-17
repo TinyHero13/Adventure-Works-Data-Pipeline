@@ -4,7 +4,7 @@ models:
   - name: stg_db__credit_card
     description: "Staging model for credit card data"
     columns:
-      - name: credit_card_id
+      - name: credit_card_pk
         data_type: int
         description: "Primary key for the credit card"
         tests:
@@ -16,3 +16,19 @@ models:
         description: "Type of credit card"
         tests:
           - not_null
+
+      - name: card_number
+        data_type: varchar
+        description: "Credit card number"
+
+      - name: exp_month
+        data_type: int
+        description: "Expiration month"
+
+      - name: exp_year
+        data_type: int
+        description: "Expiration year"
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

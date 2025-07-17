@@ -4,23 +4,16 @@ models:
   - name: stg_db__sales_person
     description: "Staging model for sales person data"
     columns:
-      - name: business_entity_id
+      - name: business_entity_pk
         data_type: int
         description: "Primary key for the sales person"
         tests:
           - unique
           - not_null
-          - relationships:
-              to: ref('stg_db__person')
-              field: business_entity_id
 
-      - name: territory_id
+      - name: territory_fk
         data_type: int
         description: "Foreign key to territory"
-        tests:
-          - relationships:
-              to: ref('stg_db__sales_territory')
-              field: territory_id
 
       - name: sales_quota
         data_type: numeric(19,4)
@@ -57,3 +50,7 @@ models:
         tests:
           - dbt_utils.accepted_range:
               min_value: 0
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

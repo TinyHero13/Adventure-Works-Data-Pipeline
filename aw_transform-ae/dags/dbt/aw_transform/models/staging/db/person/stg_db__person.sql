@@ -1,6 +1,6 @@
 with person as (
     select
-        cast(businessentityid as int) as business_entity_id
+        cast(businessentityid as int) as business_entity_pk
         , case persontype
             when 'SC' then 'Store Contact'
             when 'IN' then 'Individual (retail) customer'
@@ -11,6 +11,12 @@ with person as (
             else 'Other'
         end as person_type
         , firstname || ' ' || middlename || ' ' || lastname as full_name
+        , title
+        , suffix
+        , emailpromotion as email_promotion
+        , additionalcontactinfo as additional_contact_info
+        , demographics as demographics
+        , current_timestamp() as updated_at
     from {{ source('source_db', 'person') }}
 )
 

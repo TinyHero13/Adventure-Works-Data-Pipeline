@@ -4,7 +4,7 @@ models:
   - name: stg_db__product_category
     description: "Staging model for product category data"
     columns:
-      - name: product_category_id
+      - name: product_category_pk
         data_type: int
         description: "Primary key for the product category"
         tests:
@@ -16,3 +16,7 @@ models:
         description: "Name of the product category"
         tests:
           - not_null
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

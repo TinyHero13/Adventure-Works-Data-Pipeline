@@ -41,3 +41,8 @@ models:
         description: "Action required based on performance"
       - name: sales_person_display_name
         description: "Display name for reports"
+
+      - name: updated_at
+        description: "Timestamp when the record was loaded"
+        tests:
+          - not_null

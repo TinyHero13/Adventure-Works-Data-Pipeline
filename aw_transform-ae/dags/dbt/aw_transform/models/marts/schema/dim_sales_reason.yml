@@ -4,7 +4,7 @@ models:
   - name: dim_sales_reason
     description: "Sales reason dimension table"
     columns:
-      - name: sales_reason_id
+      - name: sales_reason_pk
         description: "Unique identifier for sales reason"
         tests:
           - not_null
@@ -15,3 +15,8 @@ models:
           - not_null
       - name: sales_reason_type
         description: "Type or category of the sales reason"
+
+      - name: updated_at
+        description: "Timestamp when the record was loaded"
+        tests:
+          - not_null

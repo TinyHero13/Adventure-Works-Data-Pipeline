@@ -5,19 +5,19 @@
 with 
     product_quantity_stats as (
         select
-            product_id
+            product_fk
             , min(quantity_sold) as min_quantity
             , max(quantity_sold) as max_quantity
             , avg(quantity_sold) as avg_quantity
             , stddev(quantity_sold) as stddev_quantity
             , count(*) as total_orders
         from {{ ref('fact_sales') }}
-        group by product_id
+        group by product_fk
     )
 
     , outlier_products as (
         select
-            product_id
+            product_fk
             , min_quantity
             , max_quantity
             , avg_quantity

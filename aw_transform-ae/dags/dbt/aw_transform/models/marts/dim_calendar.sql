@@ -1,6 +1,37 @@
 with 
     dim_calendar as (
-        select * 
+        select 
+            date_sk
+            , date_dim_id
+            , date_actual
+            , reference_week
+            , reference_month
+            , day_suffix
+            , day_name
+            , day_of_week
+            , day_of_month
+            , day_of_quarter
+            , day_of_year
+            , week_of_month
+            , week_of_year
+            , week_of_year_iso
+            , month_actual
+            , month_name
+            , month_name_abbreviated
+            , quarter_actual
+            , quarter_name
+            , year_actual
+            , first_day_of_week
+            , last_day_of_week
+            , first_day_of_month
+            , last_day_of_month
+            , first_day_of_quarter
+            , last_day_of_quarter
+            , first_day_of_year
+            , last_day_of_year
+            , mmyyyy
+            , mmddyyyy
+            , is_weekend_day
         from {{ ref('dates') }}
     )
 

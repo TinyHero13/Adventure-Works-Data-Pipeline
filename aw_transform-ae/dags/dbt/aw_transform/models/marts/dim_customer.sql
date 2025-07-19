@@ -1,8 +1,9 @@
 with 
     dim_customers as (
         select 
-            id_cliente as customer_id
+            customer_pk
             , full_name
+            , current_timestamp() as updated_at
         from {{ ref('int_sales_customer_persons') }}
     )
 

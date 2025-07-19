@@ -4,7 +4,7 @@ models:
   - name: dim_product
     description: "Product dimension table with complete product information and categorization"
     columns:
-      - name: product_id
+      - name: product_pk
         description: "Unique identifier for product"
         tests:
           - not_null
@@ -57,3 +57,8 @@ models:
         description: "Date when product was discontinued from sale"
       - name: discontinued_date
         description: "Date when product was discontinued"
+
+      - name: updated_at
+        description: "Timestamp when the record was loaded"
+        tests:
+          - not_null

@@ -4,7 +4,7 @@ models:
   - name: int_sales_product
     description: "Intermediate table for product dimensions with category and subcategory information"
     columns:
-      - name: product_id
+      - name: product_pk
         description: "Unique identifier for product"
         tests:
           - not_null
@@ -78,3 +78,8 @@ models:
 
       - name: discontinued_date
         description: "Date when product was discontinued"
+
+      - name: updated_at
+        description: "Timestamp when the record was loaded"
+        tests:
+          - not_null

@@ -16,23 +16,19 @@ models:
           - not_null
           - unique
 
-
       - name: date_actual
         description: "The actual date"
         tests:
           - not_null
 
-
       - name: reference_week
         description: "Reference week for the date"
-
 
       - name: reference_month
         description: "Reference month for the date"
 
       - name: epoch
         description: "Unix timestamp for the date"
-
 
       - name: day_suffix
         description: "Day suffix (1st, 2nd, 3rd, etc.)"

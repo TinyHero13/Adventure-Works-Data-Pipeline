@@ -4,7 +4,7 @@ models:
   - name: dim_territory
     description: "Territory dimension table with geographic and regional information"
     columns:
-      - name: territory_id
+      - name: territory_pk
         description: "Unique identifier for territory"
         tests:
           - not_null
@@ -17,3 +17,8 @@ models:
         description: "Country or region code"
       - name: group_name
         description: "Group name for the territory"
+
+      - name: updated_at
+        description: "Timestamp when the record was loaded"
+        tests:
+          - not_null

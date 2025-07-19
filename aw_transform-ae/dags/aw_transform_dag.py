@@ -27,7 +27,7 @@ profile_config = ProfileConfig(
 
 @dag(
     dag_id="aw_transform_dag",
-    schedule="@hourly",
+    schedule="@daily",
     start_date=datetime(2023, 1, 1),
     catchup=False,
     default_args={"retries": 2},

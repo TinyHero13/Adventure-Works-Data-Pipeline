@@ -32,20 +32,28 @@ models:
 
       - name: day_suffix
         description: "Day suffix (1st, 2nd, 3rd, etc.)"
+
       - name: day_name
         description: "Full name of the day"
+
       - name: day_of_week
         description: "Day of the week (1-7)"
+
       - name: day_of_month
         description: "Day of the month (1-31)"
+
       - name: day_of_quarter
         description: "Day of the quarter"
+
       - name: day_of_year
         description: "Day of the year (1-366)"
+
       - name: week_of_month
         description: "Week of the month"
+
       - name: week_of_year
         description: "Week of the year"
+
       - name: week_of_year_iso
         description: "ISO week of the year"
 

@@ -6,8 +6,8 @@ with
             , customer_fk
             , product_fk
             , territory_fk
-            , payment_method_pk
-            , order_date_id
+            , payment_method_fk
+            , order_date
             , quantity_sold
             , price
             , price_total
@@ -41,8 +41,8 @@ with
             , sales_data.customer_fk
             , sales_data.product_fk
             , sales_data.territory_fk
-            , sales_data.payment_method_pk
-            , sales_data.order_date_id
+            , sales_data.payment_method_fk
+            , sales_data.order_date
             , sales_data.quantity_sold
             , sales_data.price
             , sales_data.price_total
@@ -62,7 +62,7 @@ with
             , calendar_data.mmyyyy
         from sales_data
         inner join calendar_data
-            on sales_data.order_date_id = calendar_data.date_actual
+            on sales_data.order_date = calendar_data.date_actual
     )
 
     , monthly_agg_metrics as (
@@ -71,7 +71,7 @@ with
             reference_month as month_year
             , territory_fk  
             , product_fk
-            , payment_method_pk
+            , payment_method_fk
             , year_actual
             , month_actual
             , month_name
@@ -129,7 +129,7 @@ with
             reference_month
             , territory_fk
             , product_fk
-            , payment_method_pk
+            , payment_method_fk
             , year_actual
             , month_actual
             , month_name
@@ -144,35 +144,35 @@ with
             /* Month-over-month growth rate by territory, product and payment method */
             , round(
                 (total_revenue - lag(total_revenue) over (
-                    partition by territory_fk, product_fk, payment_method_pk 
+                    partition by territory_fk, product_fk, payment_method_fk 
                     order by month_year
                 )) * 100.0 / 
                 nullif(lag(total_revenue) over (
-                    partition by territory_fk, product_fk, payment_method_pk 
+                    partition by territory_fk, product_fk, payment_method_fk 
                     order by month_year
                 ), 0), 2
             ) as revenue_growth_mom
             
             , round(
                 (total_orders - lag(total_orders) over (
-                    partition by territory_fk, product_fk, payment_method_pk 
+                    partition by territory_fk, product_fk, payment_method_fk 
                     order by month_year
                 )) * 100.0 / 
                 nullif(lag(total_orders) over (
-                    partition by territory_fk, product_fk, payment_method_pk 
+                    partition by territory_fk, product_fk, payment_method_fk 
                     order by month_year
                 ), 0), 2
             ) as orders_growth_mom
             
             /* Year-to-date accumulated by territory, product and payment method */
             , sum(total_revenue) over (
-                partition by territory_fk, product_fk, payment_method_pk, year_actual 
+                partition by territory_fk, product_fk, payment_method_fk, year_actual 
                 order by month_actual 
                 rows unbounded preceding
             ) as ytd_revenue
             
             , sum(total_orders) over (
-                partition by territory_fk, product_fk, payment_method_pk, year_actual 
+                partition by territory_fk, product_fk, payment_method_fk, year_actual 
                 order by month_actual 
                 rows unbounded preceding
             ) as ytd_orders
@@ -188,4 +188,4 @@ with
 
 select *
 from monthly_agg_with_growth
-order by month_year, territory_fk, product_fk, payment_method_pk
+order by month_year, territory_fk, product_fk, payment_method_fk

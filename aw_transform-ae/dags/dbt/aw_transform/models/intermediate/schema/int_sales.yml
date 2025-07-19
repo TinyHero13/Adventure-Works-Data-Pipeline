@@ -34,7 +34,7 @@ models:
       - name: payment_method_pk
         description: "Payment method identifier"
 
-      - name: order_date_id
+      - name: order_date
         description: "Order date"
         tests:
           - not_null

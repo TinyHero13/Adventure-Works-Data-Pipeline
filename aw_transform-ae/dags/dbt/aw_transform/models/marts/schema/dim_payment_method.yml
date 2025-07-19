@@ -9,6 +9,7 @@ models:
         tests:
           - not_null
           - unique
+
       - name: payment_method_name
         description: "Name of the payment method (card type)"
         tests:

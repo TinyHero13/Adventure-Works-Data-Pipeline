@@ -30,7 +30,7 @@ profile_config = ProfileConfig(
     schedule="@hourly",
     start_date=datetime(2023, 1, 1),
     catchup=False,
-    default_args={"retries": 2},  # Fix for pytest compliance
+    default_args={"retries": 2},
     tags=["dbt", "databricks", "aw"],
 )
 def aw_transform_dag():

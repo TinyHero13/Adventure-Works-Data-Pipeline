@@ -1,7 +1,7 @@
 with 
     dim_sales_person as (
         select 
-            sales_person_pk as sales_person_id
+            sales_person_pk
             , sales_person_name
             , sales_quota
             , bonus

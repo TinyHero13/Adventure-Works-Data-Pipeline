@@ -4,7 +4,7 @@ with
             month_year
             , territory_fk
             , product_fk
-            , payment_method_pk
+            , payment_method_fk
             , year_actual
             , month_actual
             , month_name

@@ -19,7 +19,7 @@ models:
         tests:
           - not_null
 
-      - name: payment_method_pk
+      - name: payment_method_fk
         description: "Payment method identifier"
         tests:
           - not_null

@@ -4,7 +4,7 @@ models:
   - name: bridge_sales_reason
     description: "Bridge table connecting sales orders to sales reasons (many-to-many relationship)"
     columns:
-      - name: sales_order_pk
+      - name: sales_order_fk
         description: "Sales order identifier"
         tests:
           - not_null

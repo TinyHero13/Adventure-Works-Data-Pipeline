@@ -77,6 +77,13 @@ with
         from {{ ref('int_payment_method') }}
     )
 
+    , sales_order_header_sales_reason as (
+        select
+            sales_order_fk,
+            sales_reason_fk
+        from {{ ref('stg_db__sales_order_header_sales_reason') }}
+    )
+
     , unified_sales_order_detail as (
         select * from sales_order_detail_db
         union
@@ -116,8 +123,8 @@ with
             , unified_sales_order_detail.product_fk
             , unified_sales_order_header.sales_person_fk
             , unified_sales_order_header.territory_fk
-            , payment_methods.payment_method_pk
-            , unified_sales_order_header.order_date as order_date_id
+            , payment_methods.payment_method_pk as payment_method_fk
+            , unified_sales_order_header.order_date
             , unified_sales_order_detail.order_quantity as quantity_sold
             , unified_sales_order_detail.unit_price as price
             , unified_sales_order_detail.line_total as price_total
@@ -129,6 +136,7 @@ with
             , order_aggregations.order_total_amount
             , order_aggregations.total_items_quantity
             , order_aggregations.days_to_ship
+            , sales_order_header_sales_reason.sales_reason_fk
             , current_timestamp() as updated_at
         from unified_sales_order_detail
         inner join unified_sales_order_header
@@ -139,6 +147,8 @@ with
             on unified_sales_order_header.credit_card_fk = credit_cards.credit_card_pk
         left join payment_methods
             on credit_cards.card_type = payment_methods.payment_method_name
+        left join sales_order_header_sales_reason
+            on unified_sales_order_header.sales_order_pk = sales_order_header_sales_reason.sales_order_fk
     )
 
 select *

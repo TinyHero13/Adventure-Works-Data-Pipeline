@@ -1,14 +1,15 @@
 with 
     sales_facts as (
         select 
-            sales_order_pk
+            sales_order_detail_pk
             , sales_order_pk
             , customer_fk
             , product_fk
             , sales_person_fk
             , territory_fk
-            , payment_method_pk
-            , order_date_id
+            , payment_method_fk
+            , sales_reason_fk
+            , order_date
             , quantity_sold
             , price
             , price_total

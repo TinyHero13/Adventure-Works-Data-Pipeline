@@ -9,12 +9,15 @@ models:
         tests:
           - not_null
           - unique
+
       - name: territory_name
         description: "Name of the territory"
         tests:
           - not_null
+
       - name: country_region_code
         description: "Country or region code"
+
       - name: group_name
         description: "Group name for the territory"
 

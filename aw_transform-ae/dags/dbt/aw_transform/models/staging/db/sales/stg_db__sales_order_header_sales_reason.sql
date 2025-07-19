@@ -1,6 +1,6 @@
 with sales_order_header_reason as (
     select
-        cast(salesorderid as int) as sales_order_pk
+        cast(salesorderid as int) as sales_order_fk
         , cast(salesreasonid as int) as sales_reason_fk
         , current_timestamp() as updated_at
     from {{ source('source_db', 'sales_order_header_sales_reason') }}

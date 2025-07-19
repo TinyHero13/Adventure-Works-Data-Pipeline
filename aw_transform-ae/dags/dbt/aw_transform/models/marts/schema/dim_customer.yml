@@ -9,6 +9,7 @@ models:
         tests:
           - not_null
           - unique
+
       - name: full_name
         description: "Full name of the customer"
         tests:

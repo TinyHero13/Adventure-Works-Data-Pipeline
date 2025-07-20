@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dim_payment_method
+    description: "Payment method dimension table"
+    columns:
+      - name: payment_method_pk
+        description: "Unique identifier for payment method"
+        tests:
+          - not_null
+          - unique
+
+      - name: payment_method_name
+        description: "Name of the payment method (card type)"
+        tests:
+          - not_null
+
+      - name: updated_at
+        description: "Timestamp when the record was last updated"
+        tests:
+          - not_null

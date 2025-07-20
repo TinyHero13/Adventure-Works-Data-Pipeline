@@ -1,0 +1,68 @@
+version: 2
+
+sources:
+  - name: source_db
+    description: "Source database for staging models"
+    database: ted_dev
+    schema: dev_yasmim_lima
+    tables:
+
+      - name: sales_reason
+        identifier: raw_db_sales_salesreason
+        description: "staging table for sales reason"
+
+      - name: sales_order_header_sales_reason
+        identifier: raw_db_sales_salesorderheadersalesreason
+        description: "staging table for sales order header reason"
+      
+      - name: sales_territory
+        identifier: raw_db_sales_salesterritory
+        description: "staging table for sales territory"
+
+      - name: customer
+        identifier: raw_db_sales_customer
+        description: "staging table for customer"
+
+      - name: sales_person
+        identifier: raw_db_sales_salesperson
+        description: "staging table for sales person"
+
+      - name: sales_order_detail
+        identifier: raw_db_sales_salesorderdetail
+        description: "staging table for sales order detail"
+
+      - name: sales_order_header
+        identifier: raw_db_sales_salesorderheader
+        description: "staging table for sales order header"
+
+      - name: credit_card
+        identifier: raw_db_sales_creditcard
+        description: "staging table for credit card"
+
+      - name: product
+        identifier: raw_db_production_product
+        description: "staging table for product"
+
+      - name: product_category
+        identifier: raw_db_production_productcategory
+        description: "staging table for product category"
+      
+      - name: product_subcategory
+        identifier: raw_db_production_productsubcategory
+        description: "staging table for product subcategory"
+
+      - name: person
+        identifier: raw_db_person_person
+        description: "staging table for person"
+
+      - name: address
+        identifier: raw_db_person_address
+        description: "staging table for address"
+
+      - name: state_province
+        identifier: raw_db_person_stateprovince
+        description: "staging table for state province"
+
+      - name: country_region
+        identifier: raw_db_person_countryregion
+        description: "staging table for country region"

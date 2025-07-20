@@ -1,275 +1,317 @@
-# Data ingestion pipeline
+# Data pipeline
 
-A data ingestion pipeline that extracts data from multiple sources API and SQL Server database and loads it into Databricks Delta Lake tables.
+A comprehensive solution implementing modern data pipeline architecture, demonstrating best practices in data ingestion, transformation, and orchestration.
 
-## Project overview
+## Project Overview
 
-This project implements a comprehensive data ingestion solution for Adventure Works, demonstrating best practices in:
-- Multi-source data extraction API and SQL Server Database
-- Databricks Serverless compute
-- Infrastructure as Code using Terraform
-- Containerization with Docker
-- Parallel processing for optimal performance
-- Error handling and idempotency for production reliability
+This project implements a complete data pipeline covering the full data lifecycle from raw extraction to business-ready analytics.
 
-## Architecture 
+**Key Components:**
+- **Data ingestion** (`aw_ingestion-de`): Multi-source data extraction with Infrastructure as Code
+- **Data transformation** (`aw_transform-ae`): dbt modeling with Airflow orchestration
+- **Unified Storage**: Databricks Delta Lake with medallion architecture implementation
+
+
+For detailed information on each pipeline component:
+
+- **Data Ingestion**: For comprehensive setup, configuration, and deployment instructions → [README_ingestion.md](./aw_ingestion-de/README.md)
+- **Data Transformation**: For dbt modeling, Airflow orchestration, and analytics documentation → [README_transform.md](./aw_transform-ae/README.md)
+
+
+## Architecture Overview
+
+The pipeline implements a medallion architecture pattern with clear separation of concerns between ingestion and transformation layers:
 
 ```mermaid
 graph TB
     subgraph "Data Sources"
-        API[API]
-        DB[(SQL Server)]
+        API[Adventure Works API<br/>4 endpoints]
+        DB[(SQL Server Database<br/>68 tables)]
     end
     
-    subgraph "Infrastructure"
-        TF[Terraform]
-        DOCKER[Docker]
-    end
-    
-    subgraph "Databricks Serverless"
+    subgraph "Data Ingestion Layer"
+        direction TB
+        TF[Terraform IaC]
+        DOCKER1[Docker Container]
         NB1[API Ingestion<br/>Notebook]
         NB2[DB Ingestion<br/>Notebook]
+        
+        TF --> NB1
+        TF --> NB2
+        DOCKER1 --> TF
     end
     
-    subgraph "Storage"
-        DL[Delta Lake<br/>Tables]
+    subgraph "Data Transformation Layer"
+        direction TB
+        AF[Apache Airflow]
+        DBT[dbt Core]
+        COSMOS[Astronomer Cosmos]
+        DOCKER2[Astro Runtime]
+        
+        AF --> COSMOS
+        COSMOS --> DBT
+        DOCKER2 --> AF
+    end
+    
+    subgraph "Databricks Lakehouse Platform"
+        direction TB
+        SC[Serverless Compute]
+        UC[Unity Catalog]
+        
+        subgraph "Delta Lake Storage"
+            BRONZE[Bronze Layer<br/>Raw Data]
+            SILVER[Silver Layer<br/>Cleaned Data]
+            GOLD[Gold Layer<br/>Business Ready]
+        end
+        
+        SC --> BRONZE
+        SC --> SILVER
+        SC --> GOLD
+        UC --> BRONZE
+        UC --> SILVER
+        UC --> GOLD
+    end
+    
+    subgraph "Analytics & Consumption"
+        DOCS[dbt Documentation]
+        BI[Business Intelligence]
+        API_LAYER[Analytics API]
     end
     
     API --> NB1
     DB --> NB2
-    TF --> NB1
-    TF --> NB2
-    DOCKER --> TF
-    NB1 --> DL
-    NB2 --> DL
+    NB1 --> BRONZE
+    NB2 --> BRONZE
+    DBT --> SILVER
+    DBT --> GOLD
+    GOLD --> DOCS
+    GOLD --> BI
+    GOLD --> API_LAYER
 ```
 
-## Project structure
+## Project Structure
 
 ```
-aw-lh-checkpoint/
-├── README.md                    
-├── deploy.sh                    # Automated deployment script
-├── Dockerfile                   # Terraform container with dependencies
-├── docker-compose.yml           # Container orchestration
-├── .env                         # Environment variables 
-├── .gitignore                   # Files git will ignore
-└── terraform/                   
-    ├── main.tf                  # Main Databricks resources
-    ├── variables.tf             # Variable definitions
-    └── notebooks/               # Processing logic
-        ├── api_ingestion.py     # API data ingestion pipeline
-        └── db_ingestion.py      # Database ingestion pipeline
+AW-LH-CHECKPOINT/
+├── README.md                   
+│
+├── aw_ingestion-de/             # Data ingestion
+│   ├── README.md                # Ingestion documentation
+│   ├── deploy.sh                # Automated deployment script
+│   ├── Dockerfile               # Terraform container
+│   ├── docker-compose.yml       # Container orchestration
+│   ├── .env                     # Ingestion environment variables
+│   └── terraform/               # Infrastructure as Code
+│       ├── main.tf              # Databricks resources
+│       ├── variables.tf         # Variable definitions
+│       └── notebooks/           # Data extraction logic
+│           ├── api_ingestion.py      # API data extraction
+│           └── db_ingestion.py       # Database extraction
+│
+└── aw_transform-ae/             # Data transformation
+    ├── README.md                # Transformation documentation
+    ├── airflow_settings.yaml    # Airflow configuration
+    ├── Dockerfile               # Astro Runtime container
+    ├── requirements.txt         # Python dependencies
+    ├── packages.txt             # System packages
+    ├── config/                  # Configuration files
+    ├── include/                 # Shared utilities
+    ├── plugins/                 # Custom Airflow plugins
+    └── dags/                    # Airflow DAGs
+        ├── aw_transforma_dag.py      # Main orchestration DAG
+        └── dbt/                 # dbt project
+            └── aw_transform/     # dbt transformations
+                ├── dbt_project.yml        # dbt configuration
+                ├── packages.yml           # dbt packages
+                ├── package-lock.yml       # Package versions
+                ├── profiles.yml           # Connection profiles
+                ├── models/               # Data models
+                │   ├── staging/          # Raw data staging
+                │   │   ├── api/          # API source models
+                │   │   │   ├── stg_api__sales_order_header.sql
+                │   │   │   ├── stg_api__sales_order_detail.sql
+                │   │   │   └── api.yml   # API source documentation
+                │   │   └── db/           # Database source models
+                │   │       ├── stg_db__sales_order_header.sql
+                │   │       ├── stg_db__customer.sql
+                │   │       ├── stg_db__product.sql
+                │   │       ├── stg_db__person.sql
+                │   │       └── db.yml    # Database source documentation
+                │   ├── intermediate/     # Data processing
+                │   │   ├── int_sales.sql
+                │   │   ├── int_payment_method.sql
+                │   │   ├── int_customer_segmentation.sql
+                │   │   └── intermediate.yml
+                │   ├── marts/            # Business layer
+                │   │   ├── fact_sales.sql
+                │   │   ├── fact_sales_monthly_agg.sql
+                │   │   ├── dim_customer.sql
+                │   │   ├── dim_product.sql
+                │   │   ├── dim_sales_person.sql
+                │   │   ├── dim_territory.sql
+                │   │   ├── dim_payment_method.sql
+                │   │   ├── dim_calendar.sql
+                │   │   ├── bridge_sales_reason.sql
+                │   │   └── marts.yml     # Marts documentation
+                │   └── analytics/        # Analytics ready
+                │       ├── dates.sql
+                │       └── analytics.yml
+                ├── macros/               # Reusable SQL functions
+                │   ├── generate_schema_name.sql
+                │   └── test_helpers.sql
+                └── tests/                # Data quality tests
+                    └── singular/         # Custom business tests
+                        ├── test_sales_order_totals_match.sql
+                        ├── test_customer_sales_consistency.sql
+                        ├── test_product_quantity_outliers.sql
+                        └── test_revenue_month_over_month.sql
+
+
 ```
 
-## Getting started
+## Technology Stack
 
-### Prerequisites
+### Core Technologies
+- **Python**: Primary programming language for data processing
+- **Apache Airflow**: Workflow orchestration and scheduling
+- **dbt Core**: Data transformation framework
+- **Terraform**: Infrastructure as Code for cloud resources
+- **Docker**: Containerization for consistent deployment
 
-- **Docker and Docker Compose** ([Installation guide](https://docs.docker.com/engine/install/))
-- **Git** ([Git download](https://git-scm.com/downloads))
-- **Access to Azure Databricks workspace**
-- **Databricks personal access token** ([How to create personal access token](https://docs.databricks.com/aws/en/dev-tools/auth/pat))
+### Cloud Platform
+- **Databricks**: Unified analytics platform
+- **Delta Lake**: ACID-compliant data lakehouse storage
+- **Unity Catalog**: Centralized data governance
+- **Serverless Compute**: Auto-scaling compute resources
 
-### Dependencies
+### Integration Tools
+- **Astronomer Cosmos**: Airflow and dbt integration
+- **Astro Runtime**: Production-ready Airflow environment
+- **PySpark**: Distributed data processing
+- **SQL Server JDBC**: Database connectivity
 
-All project dependencies are containerized and automatically managed:
-- **Terraform**: Infrastructure provisioning
-- **Databricks Provider**: Databricks resource management
-- **PySpark**: Provided by Databricks runtime
-- **Python Requests**: API connectivity
-- **SQL Server JDBC Driver**: Database connectivity
+## Prerequisites
 
-### Environment Setup
+### System Requirements
+- **Operating System**: Linux, macOS, or Windows with WSL2
+- **Docker**: with Docker Compose
+- **Python**
+- **Git**: for version control
 
-1. **Clone the repository**
-```bash
-git clone <repository-url>
-cd aw-lh-checkpoint
-```
+### Cloud Platform Access
+- **Databricks Workspace**: Unity Catalog enabled
+- **Databricks SQL Warehouse**: Serverless compute recommended
+- **Personal Access Token**: For Databricks API authentication
+- **Adventure Works Database**: SQL Server access credentials
 
-2. **Verify Docker installation**
-```bash
-docker --version
-docker compose version
-```
-
-3. **Configure environment**
-```bash
-cp .env.example .env
-# Edit .env with your credentials
-```
-
-4. **Configure `.env` file with your credentials**
-```bash
-# Databricks configuration
-DATABRICKS_HOST=https://adb-xxxxxxxxx.x.azuredatabricks.net
-DATABRICKS_TOKEN=dapi********************************
-
-# API configuration  
-API_URL=http://xxx.xxx.xxx.xxx:8080/
-API_USER=xxxxxx
-API_PASSWORD=********
-
-# Database configuration
-DB_URL=jdbc:sqlserver://xxx.xxx.xxx.xxx:4563;databaseName=xxxx;encrypt=false;trustServerCertificate=true
-DB_USER=xxxxxx
-DB_PASSWORD=********
-
-# Output configuration
-OUTPUT_PATH=/Workspace/Users/your.email@domain.com/WORKSPACE_NAME
-PATH_TABLE_OUTPUT=catalog_name.schema_name
-```
-
-5. **Validate environment**
-```bash
-# Test Docker Compose configuration
-docker compose config
-```
+### Development Tools
+- **Astro CLI**: Latest version for Airflow development
+- **VS Code**: With Python and SQL extensions
 
 
-## Deployment
+## Data Pipeline Architecture
 
-### Option 1: automated deployment (recommended)
+### Ingestion Layer (Raw)
 
-```bash
-# Grant execution permission
-chmod +x deploy.sh
+**Data Sources:**
+- **Adventure Works API**: 4 REST endpoints
+- **SQL Server Database**: 68 tables
 
-# Execute complete deployment
-./deploy.sh
+**Extraction Process:**
+- **Parallel Processing**: Concurrent extraction for optimal performance
+- **Schema Detection**: Automatic schema inference for API data
+- **Error Handling**: Comprehensive retry logic and error recovery
+- **Idempotent Design**: Re-execution without data duplication
 
-# Verify deployment
-docker compose run --rm terraform show
-```
+### Transformation Layer (Staging/Intermediate/Marts)
 
-### Option 2: manual deployment
+**dbt Model Architecture:**
 
-```bash
-# Initialize Terraform
-docker compose run --rm terraform init
+**Staging Layer** (`models/staging/`):
+- Raw data standardization and type casting
+- Source-specific transformations and cleaning
+- Consistent naming conventions across sources
+- Basic data validation and filtering
 
-# Validate configuration
-docker compose run --rm terraform validate
+**Intermediate Layer** (`models/intermediate/`):
+- Business logic application and complex calculations
+- Data integration from multiple sources
 
-# Apply infrastructure
-docker compose run --rm terraform apply -auto-approve
+**Marts Layer** (`models/marts/`):
+- Production-ready fact and dimension tables
+- Optimized for analytical queries
+- Comprehensive business rules implementation
 
-# Verify resource creation
-docker compose run --rm terraform output
-```
-### Pipeline configuration
+### Data Models and Business Entities
 
-The pipeline performance settings are currently in the notebook scripts and can be modified by editing the Python files:
+**Fact Tables:**
+- `fact_sales` - Detailed sales transactions with full grain
+- `fact_sales_monthly_agg` - Monthly aggregated sales metrics 
 
-In `terraform/notebooks/api_ingestion.py`:
-```python
-MAX_WORKERS = 4              # Parallel endpoint workers
-MAX_OFFSET_WORKERS = 3       # Parallel offset workers per endpoint
-BATCH_SIZE = 100000          # Records per API request
-DEFAULT_LIMIT = 5            # Records for schema detection
-MAX_RETRIES = 30             # Maximum retry attempts
-TIMEOUT = 15                 # Request timeout in seconds
-TABLE_PREFIX = 'raw_api'     # Prefix for Delta Lake tables
-ENDPOINTS = [                # API endpoints to process
-    'SalesOrderHeader',
-    'PurchaseOrderDetail', 
-    'PurchaseOrderHeader',
-    'SalesOrderDetail'
-]
-```
+**Bridge Tables:**
+- `bridge_sales_reason` - Many-to-many relationship between sales and reasons
 
-In `terraform/notebooks/db_ingestion.py`:
-```python
-MAX_WORKERS = 15             # Parallel table processing workers
-EXCLUDED_SCHEMAS = ['dbo', 'sys', 'information_schema']  # Schemas to ignore
-TABLE_PREFIX = 'raw_db'      # Prefix for Delta Lake tables
-```
+**Dimension Tables:**
+- `dim_customer` - Customer data
+- `dim_product` - Product catalog with hierarchy (category → subcategory → product)
+- `dim_sales_person` - Sales representative information
+- `dim_territory` - Geographic territories with hierarchy
+- `dim_payment_method` - Credit card types
+- `dim_calendar` - Date dimension
 
-## Git workflow
+## Data quality and testing
 
-This project was developed following a Git Flow branching strategy with parallel feature development.
+### Testing
 
-## Branching strategy
-The development process utilized a structured approach with clearly defined branch purposes:
+**Generic tests** (Applied across all models):
+- `unique`: Primary key constraints
+- `not_null`: Required field validation
+- `relationships`: Foreign key integrity
+- `accepted_values`: Enumerated value validation
 
-- main: production code with stable releases
-- develop: integration branch for ongoing development
-- feature/*: individual feature development in isolation
-- Feature branches: feature/api_ingestion, feature/db_ingestion, feature/containerized-notebooks-terraform
+**Singular Tests** (Business logic validation):
+1. **Sales order totals match**: Validates header vs. detail calculations
+2. **Customer sales consistency**: Ensures data consistency across sources
+3. **Product quantity outliers**: Identifies unrealistic order quantities
 
-### Development workflow
+**Data Quality Metrics:**
+- Test coverage: 100% of fact and dimension tables
+- Test execution: Automated with every pipeline run
+- Failure handling: Pipeline stops on critical test failures
+- Monitoring: Slack notifications for test results
 
-The project development followed this Git workflow:
+## Orchestration and Scheduling
+
+### Apache Airflow Implementation
+
+**DAG Configuration:**
+- **Schedule**: Daily execution at 6:00 AM
+
+**Task Structure:**
+1. **Dependency check**: Validate source data availability
+2. **dbt deps**: Install required packages
+3. **dbt run**: Execute models in dependency order
+4. **dbt test**: Run data quality validations
+5. **Documentation**: Generate fresh dbt docs
+6. **Notifications**: Send success/failure alerts
+
+### Execution Flow
 
 ```mermaid
-%%{init: {
-  'theme': 'base',
-  'themeVariables': {
-    'primaryColor': '#00d4aa',
-    'primaryTextColor': '#ffffff',
-    'primaryBorderColor': '#00b894',
-    'lineColor': '#6c7b7f',
-    'secondaryColor': '#0984e3',
-    'tertiaryColor': '#00cec9',
-    'background': '#0d1117',
-    'mainBranch': '#00d4aa',
-    'secondBranch': '#00cec9',
-    'c0': '#00d4aa',
-    'c1': '#00cec9',
-    'c2': '#74b9ff',
-    'c3': '#0984e3',
-    'c4': '#00b894',
-    'c5': '#55a3ff',
-    'c6': '#81ecec',
-    'cScale0': '#ffffff',
-    'cScale1': '#ffffff',
-    'cScale2': '#ffffff',
-    'git0': '#00d4aa',
-    'git1': '#00cec9',
-    'git2': '#74b9ff',
-    'git3': '#0984e3',
-    'gitBranchLabel0': '#ffffff',
-    'gitBranchLabel1': '#ffffff',
-    'gitBranchLabel2': '#ffffff',
-    'gitBranchLabel3': '#ffffff',
-    'commitLabelFontSize': '10px',
-    'commitLabelColor': '#ffffff'
-  }
-}}%%
-
-gitGraph
-    commit id: "Initial setup"
-    branch develop
-    checkout develop
+graph LR
+    A[Trigger] --> B[CheckdDependencies]
+    B --> C[dbt deps]
+    C --> D[dbt run staging]
+    D --> E[dbt test staging]
+    E --> F[dbt run intermediate]
+    F --> G[dbt test intermediate]
+    G --> H[dbt run marts]
+    H --> I[dbt test marts]
+    I --> J[dbt docs generate]
+    J --> K[Send Notifications]
     
-    branch feature/api_ingestion
-    checkout feature/api_ingestion
-    commit id: "API implementation"
-    
-    checkout develop
-    branch feature/db_ingestion
-    checkout feature/db_ingestion
-    commit id: "DB implementation"
-    
-    checkout develop
-    merge feature/api_ingestion
-    merge feature/db_ingestion
-    
-    branch feature/containerized-notebooks-terraform
-    checkout feature/containerized-notebooks-terraform
-    commit id: "Add Docker & Terraform"
-    
-    checkout develop
-    merge feature/containerized-notebooks-terraform
-    
-    checkout main
-    merge develop
-````
-
-## Hotfix
-While no hotfixes were needed during development, the workflow supports emergency fixes:
-
-- Direct branches from main for critical production issues
-- Fast-track merge process for urgent deployments
-- Automatic back-merge to develop to maintain consistency
+    B --> L[Failure Alert]
+    E --> L
+    G --> L
+    I --> L
+```

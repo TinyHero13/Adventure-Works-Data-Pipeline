@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: stg_api__sales_order_detail
+    description: "Staging model for sales order detail data"
+    columns:
+      - name: sales_order_detail_pk
+        data_type: int
+        description: "Primary key for the sales order detail"
+        tests:
+          - unique
+          - not_null
+
+      - name: product_fk
+        data_type: int
+        description: "Foreign key to product"
+        tests:
+          - not_null
+
+      - name: sales_order_fk
+        data_type: int
+        description: "Foreign key to sales order header"
+        tests:
+          - not_null
+
+      - name: special_offer_fk
+        data_type: int
+        description: "Foreign key to special offer"
+
+      - name: carrier_tracking_number
+        data_type: varchar
+        description: "Shipment tracking number"
+
+      - name: order_quantity
+        data_type: int
+        description: "Order quantity"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+
+      - name: unit_price
+        data_type: numeric(19,4)
+        description: "Unit price"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: unit_price_discount
+        data_type: numeric(19,4)
+        description: "Unit price discount"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: line_total
+        data_type: numeric(38,6)
+        description: "Per product subtotal. Computed as UnitPrice * (1 - UnitPriceDiscount) * OrderQty"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

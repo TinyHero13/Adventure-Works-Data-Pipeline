@@ -14,3 +14,7 @@ target
 logs/*
 .astro
 .airflowignore
+dbt_packages/
+tests
+packages.txt
+dbt_internal_packages

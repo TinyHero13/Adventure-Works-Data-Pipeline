@@ -1,8 +1,8 @@
 with 
     sales_persons as (
         select 
-            business_entity_id,
-            territory_id,
+            business_entity_pk,
+            territory_fk,
             sales_quota,
             bonus,
             commission_pct,
@@ -13,7 +13,7 @@ with
 
     , persons as (
         select 
-            business_entity_id,
+            business_entity_pk,
             person_type,
             full_name
         from {{ ref('stg_db__person') }}
@@ -21,7 +21,7 @@ with
 
     , sales_persons_with_names as (
         select
-            sales_persons.business_entity_id as sales_person_id
+            sales_persons.business_entity_pk as sales_person_pk
             , sales_persons.sales_quota
             , sales_persons.bonus
             , sales_persons.commission_pct
@@ -31,12 +31,12 @@ with
             , persons.person_type
         from sales_persons
         left join persons
-            on sales_persons.business_entity_id = persons.business_entity_id
+            on sales_persons.business_entity_pk = persons.business_entity_pk
     )
 
     , final as (
         select
-            sales_person_id
+            sales_person_pk
             , sales_person_name
             , sales_quota
             , bonus
@@ -53,6 +53,7 @@ with
                 then ((sales_ytd - sales_last_year) / sales_last_year) * 100
                 else null
             end as sales_growth_pct
+            , current_timestamp() as updated_at
         from sales_persons_with_names
     )
 

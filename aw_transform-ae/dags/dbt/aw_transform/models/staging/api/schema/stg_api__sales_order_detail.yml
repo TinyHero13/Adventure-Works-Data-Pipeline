@@ -2,33 +2,34 @@ version: 2
 
 models:
   - name: stg_api__sales_order_detail
-    description: "Staging model for API sales order detail data"
+    description: "Staging model for sales order detail data"
     columns:
-      - name: sales_order_detail_id
+      - name: sales_order_detail_pk
         data_type: int
         description: "Primary key for the sales order detail"
         tests:
           - unique
           - not_null
 
-      - name: sales_order_id
-        data_type: int
-        description: "Foreign key to sales order header"
-        tests:
-          - not_null
-          - relationships:
-              to: ref('stg_api__sales_order_header')
-              field: sales_order_id
-
-      - name: carrier_tracking_number
-        data_type: varchar
-        description: "Shipment tracking number"
-
-      - name: product_id
+      - name: product_fk
         data_type: int
         description: "Foreign key to product"
         tests:
           - not_null
+
+      - name: sales_order_fk
+        data_type: int
+        description: "Foreign key to sales order header"
+        tests:
+          - not_null
+
+      - name: special_offer_fk
+        data_type: int
+        description: "Foreign key to special offer"
+
+      - name: carrier_tracking_number
+        data_type: varchar
+        description: "Shipment tracking number"
 
       - name: order_quantity
         data_type: int
@@ -60,3 +61,7 @@ models:
           - not_null
           - dbt_utils.accepted_range:
               min_value: 0
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

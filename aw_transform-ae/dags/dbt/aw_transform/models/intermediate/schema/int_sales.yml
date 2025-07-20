@@ -4,37 +4,37 @@ models:
   - name: int_sales
     description: "Intermediate table combining sales order details and headers with enriched information"
     columns:
-      - name: sales_detail_id
+      - name: sales_person_fk
         description: "Unique identifier for sales order detail"
         tests:
           - not_null
           - unique
 
-      - name: sales_order_id
+      - name: sales_order_pk
         description: "Identifier for sales order"
         tests:
           - not_null
 
-      - name: customer_id
+      - name: customer_fk
         description: "Customer identifier"
         tests:
           - not_null
 
-      - name: product_id
+      - name: product_fk
         description: "Product identifier"
         tests:
           - not_null
 
-      - name: sales_person_id
+      - name: sales_person_fk
         description: "Sales person identifier"
 
-      - name: territory_id
+      - name: territory_fk
         description: "Territory identifier"
 
-      - name: payment_method_id
+      - name: payment_method_pk
         description: "Payment method identifier"
 
-      - name: order_date_id
+      - name: order_date
         description: "Order date"
         tests:
           - not_null
@@ -53,9 +53,6 @@ models:
         description: "Total price for the line item"
         tests:
           - not_null
-
-      - name: product_cost
-        description: "Estimated product cost (70% of unit price)"
 
       - name: unit_price_discount
         description: "Discount amount per unit"
@@ -80,3 +77,8 @@ models:
 
       - name: days_to_ship
         description: "Number of days between order and ship date"
+
+      - name: updated_at
+        description: "Timestamp when the record was loaded"
+        tests:
+          - not_null

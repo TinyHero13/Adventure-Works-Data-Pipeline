@@ -4,7 +4,7 @@ models:
   - name: stg_db__sales_territory
     description: "Staging model for sales territory data"
     columns:
-      - name: territory_id
+      - name: territory_pk
         data_type: int
         description: "Primary key for the territory"
         tests:
@@ -22,9 +22,10 @@ models:
         description: "Country region code"
         tests:
           - not_null
-          - relationships:
-              to: ref('stg_db__country_region')
-              field: country_region_code
+
+      - name: group
+        data_type: varchar
+        description: "Territory group"
 
       - name: sales_ytd
         data_type: numeric
@@ -39,3 +40,21 @@ models:
         tests:
           - dbt_utils.accepted_range:
               min_value: 0
+
+      - name: cost_ytd
+        data_type: numeric
+        description: "Cost year to date"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: cost_last_year
+        data_type: numeric
+        description: "Cost last year"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

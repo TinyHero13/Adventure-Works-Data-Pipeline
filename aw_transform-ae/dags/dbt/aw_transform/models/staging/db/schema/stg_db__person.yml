@@ -4,7 +4,7 @@ models:
   - name: stg_db__person
     description: "Staging model for person data"
     columns:
-      - name: business_entity_id
+      - name: business_entity_pk
         data_type: int
         description: "Primary key for the person"
         tests:
@@ -17,10 +17,43 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ["Store Contact", "Individual (retail) customer", "Sales person", "Employee (non-sales)", "Vendor contact", "General contact", "Other"]
+              values:
+                [
+                  "Store Contact",
+                  "Individual (retail) customer",
+                  "Sales person",
+                  "Employee (non-sales)",
+                  "Vendor contact",
+                  "General contact",
+                  "Other",
+                ]
 
       - name: full_name
         data_type: varchar
         description: "Full name of the person"
         tests:
           - not_null
+
+      - name: title
+        data_type: varchar
+        description: "Person's title"
+
+      - name: suffix
+        data_type: varchar
+        description: "Surname suffix"
+
+      - name: email_promotion
+        data_type: int
+        description: "Email promotion preference"
+
+      - name: additional_contact_info
+        data_type: varchar
+        description: "Additional contact information"
+
+      - name: demographics
+        data_type: varchar
+        description: "Demographics information"
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

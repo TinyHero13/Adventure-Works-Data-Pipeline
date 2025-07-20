@@ -11,6 +11,13 @@ This project implements a complete data pipeline covering the full data lifecycl
 - **Data transformation** (`aw_transform-ae`): dbt modeling with Airflow orchestration
 - **Unified Storage**: Databricks Delta Lake with medallion architecture implementation
 
+
+For detailed information on each pipeline component:
+
+- **Data Ingestion**: For comprehensive setup, configuration, and deployment instructions → [README_ingestion.md](./aw_ingestion-de/README.md)
+- **Data Transformation**: For dbt modeling, Airflow orchestration, and analytics documentation → [README_transform.md](./aw_transform-ae/README.md)
+
+
 ## Architecture Overview
 
 The pipeline implements a medallion architecture pattern with clear separation of concerns between ingestion and transformation layers:
@@ -161,13 +168,6 @@ AW-LH-CHECKPOINT/
 
 
 ```
-
-## Component Documentation
-
-For detailed information on each pipeline component:
-
-- **Data Ingestion**: For comprehensive setup, configuration, and deployment instructions → [README_ingestion.md](./aw_ingestion-de/README.md)
-- **Data Transformation**: For dbt modeling, Airflow orchestration, and analytics documentation → [README_transform.md](./aw_transform-ae/README.md)
 
 ## Technology Stack
 

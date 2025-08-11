@@ -1,7 +1,7 @@
-with 
+with
     dim_sales_reason as (
-        select 
-            sales_reason_pk
+        select
+            sales_reason_id as sales_reason_pk
             , sales_reason_name
             , reason_type
             , current_timestamp() as updated_at

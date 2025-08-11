@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_db__customer
+    description: "Staging model for customer data"
+    columns:
+      - name: customer_id
+        data_type: int
+        description: "Primary key for the customer"
+        tests:
+          - unique
+          - not_null
+
+      - name: person_id
+        data_type: int
+        description: "Foreign key to person table"
+
+      - name: store_id
+        data_type: int
+        description: "Foreign key to store"
+
+      - name: territory_id
+        data_type: int
+        description: "Foreign key to territory"
+
+      - name: account_number
+        data_type: varchar
+        description: "Customer account number"
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

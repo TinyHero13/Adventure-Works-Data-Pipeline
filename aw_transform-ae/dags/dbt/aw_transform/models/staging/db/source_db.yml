@@ -54,15 +54,3 @@ sources:
       - name: person
         identifier: raw_db_person_person
         description: "staging table for person"
-
-      - name: address
-        identifier: raw_db_person_address
-        description: "staging table for address"
-
-      - name: state_province
-        identifier: raw_db_person_stateprovince
-        description: "staging table for state province"
-
-      - name: country_region
-        identifier: raw_db_person_countryregion
-        description: "staging table for country region"

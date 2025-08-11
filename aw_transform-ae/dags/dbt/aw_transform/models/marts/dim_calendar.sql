@@ -1,6 +1,6 @@
-with 
+with
     dim_calendar as (
-        select 
+        select
             date_sk
             , date_dim_id
             , date_actual

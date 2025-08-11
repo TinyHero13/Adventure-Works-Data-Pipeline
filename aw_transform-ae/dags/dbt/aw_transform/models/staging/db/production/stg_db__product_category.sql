@@ -1,10 +1,11 @@
-with product_category as (
-    select
-        cast(productcategoryid as int) as product_category_pk
-        , name as product_category_name
-        , current_timestamp() as updated_at
-    from {{ source('source_db', 'product_category') }}
-)
+with
+    product_category as (
+        select
+            cast(productcategoryid as int) as product_category_id
+            , name as product_category_name
+            , current_timestamp() as updated_at
+        from {{ source('source_db', 'product_category') }}
+    )
 
-select * 
+select *
 from product_category

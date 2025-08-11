@@ -1,7 +1,7 @@
-with 
+with
     dim_sales_person as (
-        select 
-            sales_person_pk
+        select
+            sales_person_id as sales_person_pk
             , sales_person_name
             , sales_quota
             , bonus

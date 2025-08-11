@@ -1,0 +1,232 @@
+version: 2
+
+models:
+  - name: dates
+    description: "Date dimension table providing comprehensive date attributes for analytics. Covers dates from 2010-01-01 to 2015-12-31."
+
+    columns:
+      - name: date_sk
+        description: "Surrogate key for the date dimension"
+        tests:
+          - unique
+          - not_null
+
+      - name: date_dim_id
+        description: "Date dimension ID in YYYYMMDD format"
+        tests:
+          - unique
+          - not_null
+
+      - name: date_actual
+        description: "The actual date value"
+        tests:
+          - unique
+          - not_null
+
+      - name: reference_week
+        description: "First day of the week for the given date"
+        tests:
+          - not_null
+
+      - name: reference_month
+        description: "First day of the month for the given date"
+        tests:
+          - not_null
+
+      - name: day_suffix
+        description: "Day of month with ordinal suffix (1st, 2nd, 3rd, etc.)"
+        tests:
+          - not_null
+
+      - name: day_name
+        description: "Full name of the day (Monday, Tuesday, etc.)"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                [
+                  "Monday",
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday",
+                  "Sunday",
+                ]
+
+      - name: day_of_week
+        description: "Day of week as number (1=Sunday, 7=Saturday)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7]
+
+      - name: day_of_month
+        description: "Day of the month (1-31)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 31
+
+      - name: day_of_quarter
+        description: "Day of the quarter (1-92)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 92
+
+      - name: day_of_year
+        description: "Day of the year (1-366)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 366
+
+      - name: week_of_month
+        description: "Week of the month"
+        tests:
+          - not_null
+
+      - name: week_of_year
+        description: "Week of the year (1-53)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 53
+
+      - name: week_of_year_iso
+        description: "ISO week format (YYYY-WNN-D)"
+        tests:
+          - not_null
+
+      - name: month_actual
+        description: "Month as number (1-12)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+      - name: month_name
+        description: "Full month name"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                [
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ]
+
+      - name: month_name_abbreviated
+        description: "Abbreviated month name"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                [
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec",
+                ]
+
+      - name: quarter_actual
+        description: "Quarter number (1-4)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4]
+
+      - name: quarter_name
+        description: "Quarter name (First, Second, Third, Fourth)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["First", "Second", "Third", "Fourth"]
+
+      - name: year_actual
+        description: "Year as number"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 2010
+              max_value: 2015
+
+      - name: first_day_of_week
+        description: "First day of the week for the given date"
+        tests:
+          - not_null
+
+      - name: last_day_of_week
+        description: "Last day of the week for the given date"
+        tests:
+          - not_null
+
+      - name: first_day_of_month
+        description: "First day of the month for the given date"
+        tests:
+          - not_null
+
+      - name: last_day_of_month
+        description: "Last day of the month for the given date"
+        tests:
+          - not_null
+
+      - name: first_day_of_quarter
+        description: "First day of the quarter for the given date"
+        tests:
+          - not_null
+
+      - name: last_day_of_quarter
+        description: "Last day of the quarter for the given date"
+        tests:
+          - not_null
+
+      - name: first_day_of_year
+        description: "First day of the year for the given date"
+        tests:
+          - not_null
+
+      - name: last_day_of_year
+        description: "Last day of the year for the given date"
+        tests:
+          - not_null
+
+      - name: mmyyyy
+        description: "Month and year in MMYYYY format"
+        tests:
+          - not_null
+
+      - name: mmddyyyy
+        description: "Month, day and year in MMDDYYYY format"
+        tests:
+          - not_null
+
+      - name: is_weekend_day
+        description: "Boolean flag indicating if the date is a weekend (Saturday or Sunday)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]

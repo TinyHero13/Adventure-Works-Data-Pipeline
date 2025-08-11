@@ -1,0 +1,122 @@
+[sqlfluff]
+# verbose is an integer (0-2) indicating the level of log output
+verbose = 0
+# Turn off color formatting of output
+nocolor = False
+# Supported dialects https://docs.sqlfluff.com/en/stable/dialects.html
+dialect = databricks
+# One of [raw|jinja|python|placeholder]
+templater = dbt
+# Comma separated list of rules to check, default to all
+rules = all
+# Comma separated list of rules to exclude, or None
+exclude_rules = AL07, ST05, ST06
+# Below controls SQLFluff output, see max_line_length for SQL output
+output_line_length = 100
+max_line_length = 100
+# Number of passes to run before admitting defeat
+runaway_limit = 10
+# Ignore errors by category (one or more of the following, separated by commas: lexing,linting,parsing,templating)
+ignore = None
+# Ignore linting errors found within sections of code coming directly from
+# templated code (e.g. from within Jinja curly braces. Note that it does not
+# ignore errors from literal code found within template loops.
+ignore_templated_areas = True
+# can either be autodetect or a valid encoding e.g. utf-8, utf-8-sig
+encoding = autodetect
+# Ignore inline overrides (e.g. to test if still required)
+disable_noqa = False
+# Comma separated list of file extensions to lint
+sql_file_exts = .sql,.sql.j2,.dml,.ddl
+# Allow fix to run on files, even if they contain parsing errors
+fix_even_unparsable = False
+# Very large files can make the parser effectively hang.
+large_file_skip_char_limit = 0
+large_file_skip_byte_limit = 20000
+# CPU processes to use while linting.
+processes = 1
+
+[sqlfluff:indentation]
+indented_joins = False
+indented_ctes = True
+indented_using_on = True
+indented_on_contents = False
+template_blocks_indent = True
+tab_space_size = 4
+indent_unit = space
+
+[sqlfluff:layout:type:comma]
+line_position = leading
+
+[sqlfluff:templater]
+unwrap_wrapped_queries = True
+
+[sqlfluff:templater:dbt]
+apply_dbt_builtins = True
+project_dir = ./dags/dbt/aw_transform
+profiles_dir = ~/.dbt/
+profile = aw_transform
+target = dev
+dbt_skip_compilation_error = True
+
+[sqlfluff:rules]
+allow_scalar = True
+single_table_references = consistent
+unquoted_identifiers_policy = all
+
+# Capitalisation rules
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = lower
+
+# Aliasing rules
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit
+
+# Convention rules
+[sqlfluff:rules:convention.select_trailing_comma]
+select_clause_trailing_comma = forbid
+
+[sqlfluff:rules:convention.count_rows]
+prefer_count_1 = True
+
+[sqlfluff:rules:convention.terminator]
+multiline_newline = False
+require_final_semicolon = False
+
+# References rules
+[sqlfluff:rules:references.from]
+force_enable = True
+
+[sqlfluff:rules:references.qualification]
+force_enable = False
+
+[sqlfluff:rules:references.consistent]
+single_table_references = consistent
+
+[sqlfluff:rules:references.keywords]
+unquoted_identifiers_policy = aliases
+quoted_identifiers_policy = none
+
+[sqlfluff:rules:references.special_chars]
+unquoted_identifiers_policy = all
+quoted_identifiers_policy = all
+allow_space_in_identifier = False
+
+[sqlfluff:rules:references.quoting]
+prefer_quoted_identifiers = False
+max_alias_length = None

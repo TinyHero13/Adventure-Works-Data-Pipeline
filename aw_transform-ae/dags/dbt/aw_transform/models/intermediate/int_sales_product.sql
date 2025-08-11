@@ -1,7 +1,7 @@
-with 
+with
     products as (
-        select 
-            product_pk
+        select
+            product_id
             , product_name
             , product_number
             , make_flag
@@ -18,7 +18,8 @@ with
             , product_line
             , class
             , style
-            , product_subcategory_fk
+            , standard_cost
+            , product_subcategory_id
             , sell_start_date
             , sell_end_date
             , discontinued_date
@@ -26,23 +27,23 @@ with
     )
 
     , product_subcategories as (
-        select 
-            product_subcategory_pk
-            , product_category_fk
+        select
+            product_subcategory_id
+            , product_category_id
             , product_subcategory_name
         from {{ ref('stg_db__product_subcategory') }}
     )
 
     , product_categories as (
-        select 
-            product_category_pk
+        select
+            product_category_id
             , product_category_name
         from {{ ref('stg_db__product_category') }}
     )
 
     , products_with_subcategories as (
         select
-            products.product_pk
+            products.product_id
             , products.product_name
             , products.product_number
             , products.make_flag
@@ -61,18 +62,20 @@ with
             , products.style
             , products.sell_start_date
             , products.sell_end_date
+            , products.standard_cost
             , products.discontinued_date
-            , products.product_subcategory_fk
+            , products.product_subcategory_id
             , product_subcategories.product_subcategory_name
-            , product_subcategories.product_category_fk
+            , product_subcategories.product_category_id
         from products
         left join product_subcategories
-            on products.product_subcategory_fk = product_subcategories.product_subcategory_pk
+            on products.product_subcategory_id
+            = product_subcategories.product_subcategory_id
     )
 
     , products_with_categories as (
         select
-            products_with_subcategories.product_pk
+            products_with_subcategories.product_id
             , products_with_subcategories.product_name
             , products_with_subcategories.product_number
             , products_with_subcategories.make_flag
@@ -89,21 +92,23 @@ with
             , products_with_subcategories.product_line
             , products_with_subcategories.class
             , products_with_subcategories.style
+            , products_with_subcategories.standard_cost
             , products_with_subcategories.sell_start_date
             , products_with_subcategories.sell_end_date
             , products_with_subcategories.discontinued_date
-            , products_with_subcategories.product_subcategory_fk
+            , products_with_subcategories.product_subcategory_id
             , products_with_subcategories.product_subcategory_name
-            , products_with_subcategories.product_category_fk
+            , products_with_subcategories.product_category_id
             , product_categories.product_category_name
         from products_with_subcategories
         left join product_categories
-        on products_with_subcategories.product_category_fk = product_categories.product_category_pk
+            on products_with_subcategories.product_category_id
+            = product_categories.product_category_id
     )
 
     , final as (
         select
-            product_pk
+            product_id
             , product_name
             , product_number
             , product_category_name
@@ -117,6 +122,7 @@ with
             , finished_goods_flag
             , days_to_manufacture
             , product_line
+            , standard_cost
             , class
             , style
             , list_price
@@ -129,5 +135,5 @@ with
         from products_with_categories
     )
 
-select * 
+select *
 from final

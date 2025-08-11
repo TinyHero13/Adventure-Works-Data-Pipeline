@@ -7,23 +7,24 @@ from cosmos.profiles import DatabricksTokenProfileMapping
 from cosmos import DbtTaskGroup, ProjectConfig, ProfileConfig
 from cosmos.operators import DbtDocsOperator
 
-
 DBT_PROJECT_PATH = Path(f"{os.environ.get('AIRFLOW_HOME', '/usr/local/airflow')}/dags/dbt/aw_transform")
 
-profile_config = ProfileConfig(
-    profile_name=Variable.get("DBT_PROFILE_NAME"),
-    target_name=Variable.get("DBT_TARGET_NAME"),
-    profile_mapping=DatabricksTokenProfileMapping(
-        conn_id=Variable.get("DATABRICKS_CONNECTION_ID"),
-        profile_args={
-            "catalog": Variable.get("DATABRICKS_CATALOG"),
-            "schema": Variable.get("DATABRICKS_SCHEMA"),
-            "host": Variable.get("DATABRICKS_HOST"),
-            "http_path": Variable.get("DATABRICKS_HTTP_PATH"),
-            "token": Variable.get("DATABRICKS_TOKEN")
-        },
+def get_profile_config():
+    """Create profile config - called only when DAG runs, not during import"""
+    return ProfileConfig(
+        profile_name=Variable.get("DBT_PROFILE_NAME"),
+        target_name=Variable.get("DBT_TARGET_NAME"),
+        profile_mapping=DatabricksTokenProfileMapping(
+            conn_id=Variable.get("DATABRICKS_CONNECTION_ID"),
+            profile_args={
+                "catalog": Variable.get("DATABRICKS_CATALOG"),
+                "schema": Variable.get("DATABRICKS_SCHEMA"),
+                "host": Variable.get("DATABRICKS_HOST"),
+                "http_path": Variable.get("DATABRICKS_HTTP_PATH"),
+                "token": Variable.get("DATABRICKS_TOKEN")
+            },
+        )
     )
-)
 
 @dag(
     dag_id="aw_transform_dag",
@@ -37,6 +38,7 @@ def aw_transform_dag():
     """
     DAG for running dbt transformations for Adventure Works
     """
+    profile_config = get_profile_config()
     
     dbt_tg = DbtTaskGroup(
         group_id="aw_transform",
@@ -46,7 +48,7 @@ def aw_transform_dag():
         profile_config=profile_config,
         operator_args={
             "install_deps": True,
-            "full_refresh": True,
+            "full_refresh": True
         },
     )
     
@@ -57,7 +59,5 @@ def aw_transform_dag():
     )
     
     dbt_tg >> generate_dbt_docs
-    
-    return [dbt_tg, generate_dbt_docs]
 
 dag_instance = aw_transform_dag()

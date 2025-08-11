@@ -1,0 +1,107 @@
+version: 2
+
+models:
+  - name: stg_db__product
+    description: "Staging model for product data from the database source"
+    columns:
+      - name: product_id
+        description: "Primary key for product"
+        tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: "Name of the product"
+        tests:
+          - not_null
+
+      - name: product_number
+        description: "Product number/SKU"
+        tests:
+          - not_null
+          - unique
+
+      - name: make_flag
+        description: "Flag indicating if product is manufactured or purchased"
+
+      - name: finished_goods_flag
+        description: "Flag indicating if product is finished goods"
+
+      - name: color
+        description: "Product color"
+
+      - name: safety_stock_level
+        description: "Safety stock level"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: reorder_point
+        description: "Reorder point for inventory"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: standard_cost
+        description: "Standard cost of the product"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: list_price
+        description: "List price of the product"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: size
+        description: "Product size"
+
+      - name: size_unit_measure_code
+        description: "Unit of measure for size"
+
+      - name: weight_unit_measure_code
+        description: "Unit of measure for weight"
+
+      - name: weight
+        description: "Product weight"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: days_to_manufacture
+        description: "Number of days required to manufacture"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: product_line
+        description: "Product line classification"
+
+      - name: class
+        description: "Product class"
+
+      - name: style
+        description: "Product style"
+
+      - name: product_subcategory_id
+        description: "Foreign key to product subcategory"
+
+      - name: product_model_id
+        description: "Foreign key to product model"
+
+      - name: sell_start_date
+        description: "Date when product became available for sale"
+        tests:
+          - not_null
+
+      - name: sell_end_date
+        description: "Date when product was discontinued"
+
+      - name: discontinued_date
+        description: "Date when product was discontinued"
+
+      - name: updated_at
+        description: "Timestamp when the record was loaded"
+        tests:
+          - not_null

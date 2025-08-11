@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_db__product_category
+    description: "Staging model for product category data"
+    columns:
+      - name: product_category_id
+        data_type: int
+        description: "Primary key for the product category"
+        tests:
+          - unique
+          - not_null
+
+      - name: product_category_name
+        data_type: varchar
+        description: "Name of the product category"
+        tests:
+          - not_null
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

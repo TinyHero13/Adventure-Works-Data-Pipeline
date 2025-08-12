@@ -97,6 +97,13 @@ models:
           - dbt_utils.accepted_range:
               min_value: 0
 
+      - name: total_due
+        data_type: numeric(19,4)
+        description: "Total amount due"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
       - name: freight
         data_type: numeric(19,4)
         description: "Shipping cost"

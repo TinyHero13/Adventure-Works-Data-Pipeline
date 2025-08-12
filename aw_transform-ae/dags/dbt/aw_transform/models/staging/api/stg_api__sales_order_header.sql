@@ -18,6 +18,7 @@ with
             , accountnumber as account_number
             , creditcardapprovalcode as credit_card_approval_code
             , cast(subtotal as numeric(19, 4)) as subtotal
+            , cast(totaldue as numeric(19, 4)) as total_due
             , cast(freight as numeric(19, 4)) as freight
             , to_date(duedate, 'MM/DD/YYYY') as due_date
             , to_date(shipdate, 'MM/DD/YYYY') as ship_date

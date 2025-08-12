@@ -46,6 +46,12 @@ models:
       - name: due_date
         description: "Date the order is due"
 
+      - name: subtotal
+        description: "Order subtotal amount"
+
+      - name: total_due
+        description: "Total amount due for the order"
+
       - name: freight
         description: "Freight cost for the order"
 

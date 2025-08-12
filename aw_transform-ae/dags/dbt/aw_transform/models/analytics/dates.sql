@@ -6,19 +6,24 @@
 }}
 
 with 
-    date_array as (
-        {{
-                dbt_utils.date_spine(
-                    datepart="day"
-                    , start_date="cast('2011-01-01' as date)"
-                    , end_date="cast('2016-01-01' as date)"
-                )
-            }}
+    sales_date_range as (
+        select 
+            date_sub(min(order_date), 30) as start_date,
+            date_add(max(order_date), 30) as end_date
+        from {{ ref('int_sales') }}
+    )
+
+    , date_spine_base as (
+        select explode(sequence(
+            (select start_date from sales_date_range),
+            (select end_date from sales_date_range),
+            interval 1 day
+        )) as date_day
     )
 
     , casting_fix as (
         select cast(date_day as date) as date_day
-        from date_array
+        from date_spine_base
     )
 
     , dates as (

@@ -47,9 +47,12 @@ with
             , int_sales.online_order_flag
             , int_sales.ship_date
             , int_sales.due_date
+            , int_sales.subtotal
+            , int_sales.total_due
             , int_sales.freight
             , int_sales.order_total_amount
             , int_sales.total_items_quantity
+            , int_sales.days_to_ship
             , current_timestamp() as updated_at
         from {{ ref('int_sales') }} as int_sales
         left join dim_product

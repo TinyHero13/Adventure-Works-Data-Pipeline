@@ -32,6 +32,8 @@ with
             , customer_id
             , due_date
             , freight
+            , subtotal
+            , total_due
             , online_order_flag
             , territory_id
             , order_date
@@ -51,6 +53,8 @@ with
             , customer_id
             , due_date
             , freight
+            , subtotal
+            , total_due
             , online_order_flag
             , territory_id
             , order_date
@@ -139,6 +143,8 @@ with
             , unified_sales_order_header.ship_date
             , unified_sales_order_header.due_date
             , unified_sales_order_header.freight
+            , unified_sales_order_header.subtotal
+            , unified_sales_order_header.total_due
             , order_aggregations.order_total_amount
             , order_aggregations.total_items_quantity
             , order_aggregations.days_to_ship

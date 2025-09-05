@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: bridge_sales_reason
+    description: "Bridge table connecting sales orders to sales reasons (many-to-many relationship)"
+    columns:
+      - name: sales_order_fk
+        description: "Sales order identifier"
+
+      - name: sales_reason_fk
+        description: "Sales reason identifier"
+
+      - name: updated_at
+        description: "Timestamp when the record was updated"

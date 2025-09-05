@@ -1,7 +1,7 @@
-with 
+with
     dim_products as (
-        select 
-            product_pk
+        select
+            product_id as product_pk
             , product_name
             , product_number
             , product_category_name
@@ -15,6 +15,7 @@ with
             , finished_goods_flag
             , days_to_manufacture
             , product_line
+            , standard_cost
             , class
             , style
             , list_price

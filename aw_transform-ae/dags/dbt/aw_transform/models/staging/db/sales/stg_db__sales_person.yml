@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: stg_db__sales_person
+    description: "Staging model for sales person data"
+    columns:
+      - name: business_entity_id
+        data_type: int
+        description: "Primary key for the sales person"
+        tests:
+          - unique
+          - not_null
+
+      - name: territory_id
+        data_type: int
+        description: "Foreign key to territory"
+
+      - name: sales_quota
+        data_type: numeric(19,4)
+        description: "Sales quota"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: bonus
+        data_type: numeric(19,4)
+        description: "Bonus amount"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: commission_pct
+        data_type: numeric(19,4)
+        description: "Commission percentage"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      - name: sales_ytd
+        data_type: numeric(19,4)
+        description: "Sales year to date"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: sales_last_year
+        data_type: numeric(19,4)
+        description: "Sales last year"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+      - name: updated_at
+        data_type: timestamp
+        description: "Timestamp when record was last updated"

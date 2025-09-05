@@ -1,11 +1,11 @@
-with 
+with
     sales_reason_bridge as (
-        select 
-            sales_order_fk
-            , sales_reason_fk
+        select
+            sales_order_id as sales_order_fk
+            , sales_reason_id as sales_reason_fk
             , current_timestamp() as updated_at
         from {{ ref('stg_db__sales_order_header_sales_reason') }}
-)
+    )
 
 select *
 from sales_reason_bridge

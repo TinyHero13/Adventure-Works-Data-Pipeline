@@ -90,8 +90,7 @@ aw_transform-ae/
                └── singular/         # Custom business logic tests
                    ├── test_sales_order_totals_match.sql
                    ├── test_customer_sales_consistency.sql
-                   ├── test_product_quantity_outliers.sql
-                   └── test_revenue_month_over_month.sql
+                   └── test_product_quantity_outliers.sql
 ```
 
 ## Getting started
@@ -293,14 +292,6 @@ Identifies unrealistic product quantities:
 /* Flags orders with quantities > 3 standard deviations from mean
    Helps identify data entry errors
    Validates business rule compliance */
-```
-
-#### 4. Revenue Month-over-Month (`test_revenue_month_over_month.sql`)
-Validates revenue calculation consistency:
-```sql
-/* Ensures monthly aggregations match detail-level calculations
-   Validates fact_sales_monthly_agg against fact_sales
-   Checks for temporal data integrity */
 ```
 
 ### Test Execution

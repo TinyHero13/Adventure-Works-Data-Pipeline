@@ -1,0 +1,13 @@
+target/
+# dbt <1.0.0
+dbt_modules/
+# dbt >=1.0.0
+dbt_packages/
+macros/
+# dbt logs and compiled files
+logs/
+dbt_internal_packages/
+# dbt project specific ignores
+**/target/
+**/dbt_packages/
+**/logs/

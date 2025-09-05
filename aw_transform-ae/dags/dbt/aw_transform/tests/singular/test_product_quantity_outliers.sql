@@ -2,14 +2,14 @@
     This test validates that order quantities are realistic and identifies
     any potential data quality issues with extreme values */
 
-with 
+with
     product_quantity_stats as (
         select
             product_fk
-            , min(quantity_sold) as min_quantity
-            , max(quantity_sold) as max_quantity
-            , avg(quantity_sold) as avg_quantity
-            , stddev(quantity_sold) as stddev_quantity
+            , min(order_quantity) as min_quantity
+            , max(order_quantity) as max_quantity
+            , avg(order_quantity) as avg_quantity
+            , stddev(order_quantity) as stddev_quantity
             , count(*) as total_orders
         from {{ ref('fact_sales') }}
         group by product_fk
@@ -23,16 +23,19 @@ with
             , avg_quantity
             , stddev_quantity
             , total_orders
-            , case 
+            , case
                 when min_quantity <= 0 then 'Negative or Zero Quantity'
                 when max_quantity > 1000 then 'Extremely High Quantity'
-                when stddev_quantity > (avg_quantity * 2) then 'High Variance in Quantities'
+                when
+                    stddev_quantity > (avg_quantity * 2)
+                    then 'High Variance in Quantities'
                 else 'Unknown Issue'
             end as issue_type
         from product_quantity_stats
-        where min_quantity <= 0
-        or max_quantity > 1000
-        or stddev_quantity > (avg_quantity * 2)
+        where
+            min_quantity <= 0
+            or max_quantity > 1000
+            or stddev_quantity > (avg_quantity * 2)
     )
 
 select *

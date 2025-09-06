@@ -9,6 +9,7 @@ This project implements a complete data pipeline covering the full data lifecycl
 **Key Components:**
 - **Data ingestion** (`aw_ingestion-de`): Multi-source data extraction with Infrastructure as Code
 - **Data transformation** (`aw_transform-ae`): dbt modeling with Airflow orchestration
+- **Machine Learning** (`aw_ml-ds`): Predictive analytics and demand forecasting
 - **Unified Storage**: Databricks Delta Lake with medallion architecture implementation
 
 
@@ -16,6 +17,7 @@ For detailed information on each pipeline component:
 
 - **Data Ingestion**: For comprehensive setup, configuration, and deployment instructions → [README_ingestion.md](./aw_ingestion-de/README.md)
 - **Data Transformation**: For dbt modeling, Airflow orchestration, and analytics documentation → [README_transform.md](./aw_transform-ae/README.md)
+- **Machine Learning**: For predictive analytics, demand forecasting, and business intelligence → [README_ml.md](./aw_ml-ds/README.md)
 
 
 ## Architecture Overview
@@ -73,6 +75,7 @@ graph TB
     end
     
     subgraph "Analytics & Consumption"
+        ML[Machine Learning Models]
         DOCS[dbt Documentation]
         BI[Business Intelligence]
         API_LAYER[Analytics API]
@@ -84,6 +87,7 @@ graph TB
     NB2 --> BRONZE
     DBT --> SILVER
     DBT --> GOLD
+    GOLD --> ML
     GOLD --> DOCS
     GOLD --> BI
     GOLD --> API_LAYER
@@ -108,64 +112,70 @@ AW-LH-CHECKPOINT/
 │           ├── api_ingestion.py      # API data extraction
 │           └── db_ingestion.py       # Database extraction
 │
-└── aw_transform-ae/             # Data transformation
-    ├── README.md                # Transformation documentation
-    ├── airflow_settings.yaml    # Airflow configuration
-    ├── Dockerfile               # Astro Runtime container
-    ├── requirements.txt         # Python dependencies
-    ├── packages.txt             # System packages
-    ├── config/                  # Configuration files
-    ├── include/                 # Shared utilities
-    ├── plugins/                 # Custom Airflow plugins
-    └── dags/                    # Airflow DAGs
-        ├── aw_transforma_dag.py      # Main orchestration DAG
-        └── dbt/                 # dbt project
-            └── aw_transform/     # dbt transformations
-                ├── dbt_project.yml        # dbt configuration
-                ├── packages.yml           # dbt packages
-                ├── package-lock.yml       # Package versions
-                ├── profiles.yml           # Connection profiles
-                ├── models/               # Data models
-                │   ├── staging/          # Raw data staging
-                │   │   ├── api/          # API source models
-                │   │   │   ├── stg_api__sales_order_header.sql
-                │   │   │   ├── stg_api__sales_order_detail.sql
-                │   │   │   └── api.yml   # API source documentation
-                │   │   └── db/           # Database source models
-                │   │       ├── stg_db__sales_order_header.sql
-                │   │       ├── stg_db__customer.sql
-                │   │       ├── stg_db__product.sql
-                │   │       ├── stg_db__person.sql
-                │   │       └── db.yml    # Database source documentation
-                │   ├── intermediate/     # Data processing
-                │   │   ├── int_sales.sql
-                │   │   ├── int_payment_method.sql
-                │   │   ├── int_customer_segmentation.sql
-                │   │   └── intermediate.yml
-                │   ├── marts/            # Business layer
-                │   │   ├── fact_sales.sql
-                │   │   ├── fact_sales_monthly_agg.sql
-                │   │   ├── dim_customer.sql
-                │   │   ├── dim_product.sql
-                │   │   ├── dim_sales_person.sql
-                │   │   ├── dim_territory.sql
-                │   │   ├── dim_payment_method.sql
-                │   │   ├── dim_calendar.sql
-                │   │   ├── bridge_sales_reason.sql
-                │   │   └── marts.yml     # Marts documentation
-                │   └── analytics/        # Analytics ready
-                │       ├── dates.sql
-                │       └── analytics.yml
-                ├── macros/               # Reusable SQL functions
-                │   ├── generate_schema_name.sql
-                │   └── test_helpers.sql
-                └── tests/                # Data quality tests
-                    └── singular/         # Custom business tests
-                        ├── test_sales_order_totals_match.sql
-                        ├── test_customer_sales_consistency.sql
-                        ├── test_product_quantity_outliers.sql
-                        └── test_revenue_month_over_month.sql
-
+├── aw_transform-ae/             # Data transformation
+│   ├── README.md                # Transformation documentation
+│   ├── airflow_settings.yaml    # Airflow configuration
+│   ├── Dockerfile               # Astro Runtime container
+│   ├── requirements.txt         # Python dependencies
+│   ├── packages.txt             # System packages
+│   ├── config/                  # Configuration files
+│   ├── include/                 # Shared utilities
+│   ├── plugins/                 # Custom Airflow plugins
+│   └── dags/                    # Airflow DAGs
+│       ├── aw_transforma_dag.py      # Main orchestration DAG
+│       └── dbt/                 # dbt project
+│           └── aw_transform/     # dbt transformations
+│               ├── dbt_project.yml        # dbt configuration
+│               ├── packages.yml           # dbt packages
+│               ├── package-lock.yml       # Package versions
+│               ├── profiles.yml           # Connection profiles
+│               ├── models/               # Data models
+│               │   ├── staging/          # Raw data staging
+│               │   │   ├── api/          # API source models
+│               │   │   │   ├── stg_api__sales_order_header.sql
+│               │   │   │   ├── stg_api__sales_order_detail.sql
+│               │   │   │   └── api.yml   # API source documentation
+│               │   │   └── db/           # Database source models
+│               │   │       ├── stg_db__sales_order_header.sql
+│               │   │       ├── stg_db__customer.sql
+│               │   │       ├── stg_db__product.sql
+│               │   │       ├── stg_db__person.sql
+│               │   │       └── db.yml    # Database source documentation
+│               │   ├── intermediate/     # Data processing
+│               │   │   ├── int_sales.sql
+│               │   │   ├── int_payment_method.sql
+│               │   │   ├── int_customer_segmentation.sql
+│               │   │   └── intermediate.yml
+│               │   ├── marts/            # Business layer
+│               │   │   ├── fact_sales.sql
+│               │   │   ├── fact_sales_monthly_agg.sql
+│               │   │   ├── dim_customer.sql
+│               │   │   ├── dim_product.sql
+│               │   │   ├── dim_sales_person.sql
+│               │   │   ├── dim_territory.sql
+│               │   │   ├── dim_payment_method.sql
+│               │   │   ├── dim_calendar.sql
+│               │   │   ├── bridge_sales_reason.sql
+│               │   │   └── marts.yml     # Marts documentation
+│               │   └── analytics/        # Analytics ready
+│               │       ├── dates.sql
+│               │       └── analytics.yml
+│               ├── macros/               # Reusable SQL functions
+│               │   ├── generate_schema_name.sql
+│               │   └── test_helpers.sql
+│               └── tests/                # Data quality tests
+│                   └── singular/         # Custom business tests
+│                       ├── test_sales_order_totals_match.sql
+│                       ├── test_customer_sales_consistency.sql
+│                       ├── test_product_quantity_outliers.sql
+│                       └── test_revenue_month_over_month.sql
+│
+└── aw_ml-ds/                    # Machine Learning & Analytics
+    ├── README.md                # ML documentation
+    ├── 1. Previsão de demanda.ipynb            # Product/store demand forecasting
+    ├── 2. Viabilidade de modelos de regressao.ipynb       # Regression model evaluation
+    ├── 3. Crescimento por centro de distribuicao.ipynb    # Regional growth analysis
+    └── 4. Estimativa de zipers.ipynb           # Supply chain optimization
 
 ```
 
@@ -315,3 +325,59 @@ graph LR
     G --> L
     I --> L
 ```
+
+## Machine Learning & Predictive Analytics
+
+### ML Pipeline Overview
+
+The machine learning component (`aw_ml-ds`) leverages the clean, business-ready data from the transformation layer to deliver actionable predictions and strategic insights.
+
+**Core Capabilities:**
+- **Demand Forecasting**: Product-store level predictions for inventory optimization
+- **Regional Growth Analysis**: Strategic market expansion insights
+- **Supply Chain Optimization**: Material requirement planning and procurement
+- **Model Performance Validation**: Comprehensive evaluation and comparison frameworks
+
+### Business Problems & Solutions
+
+**1. Demand Forecasting** ([1. Previsão de demanda.ipynb](https://github.com/YasmimAbrahao/AW-LH-CHECKPOINT/blob/develop/aw_ml-ds/1.%20Previs%C3%A3o%20de%20demanda.ipynb))
+- **Objective**: 3-month demand predictions at product-store granularity
+- **Models**: ARIMA, Prophet, Moving Averages comparison
+- **Output**: Actionable forecasts with confidence intervals
+- **Key Insight**: Simple baselines often outperform complex models for volatile products
+
+**2. Regression Model Evaluation** ([2. Viabilidade de modelos de regressao.ipynb](https://github.com/YasmimAbrahao/AW-LH-CHECKPOINT/blob/develop/aw_ml-ds/2.%20Viabilidade%20de%20modelos%20de%20regressao.ipynb))
+- **Objective**: Scalable forecasting approach for entire product catalog
+- **Models**: XGBoost, Random Forest, Linear Regression
+- **Validation**: Time Series Cross-Validation (5 folds)
+- **Result**: 54.6% improvement over baseline (XGBoost: 102.1% vs 225.2% MAPE)
+
+**3. Regional Growth Analysis** ([3. Crescimento por centro de distribuicao.ipynb](https://github.com/YasmimAbrahao/AW-LH-CHECKPOINT/blob/develop/aw_ml-ds/3.%20Crescimento%20por%20centro%20de%20distribuicao.ipynb))
+- **Objective**: Compare US provinces vs. international market growth
+- **Approach**: Polynomial trend modeling with 12-month smoothing
+- **Strategic Finding**: International markets (+30.0%) vs US decline (-4.8%)
+- **Impact**: Clear direction for resource allocation and market investment
+
+**4. Supply Chain Optimization** ([4. Estimativa de zipers.ipynb](https://github.com/YasmimAbrahao/AW-LH-CHECKPOINT/blob/develop/aw_ml-ds/4.%20Estimativa%20de%20zipers.ipynb))
+- **Objective**: Zipper procurement planning for glove production
+- **Business Rule**: 2 zippers per glove pair
+- **Methodology**: Conservative 12-month moving average for volatility management
+- **Recommendation**: 83,080 zippers for next 3 months
+
+### Technical Implementation
+
+**Model Validation Framework:**
+- **Metrics**: MAE, RMSE, MAPE, R² for comprehensive evaluation
+- **Cross-Validation**: Time Series Split to prevent data leakage
+- **Performance Tracking**: Consistent model comparison across business problems
+
+**Feature Engineering:**
+- **Temporal Features**: Lag variables (1, 2, 3, 6, 12 months)
+- **Trend Indicators**: Moving averages (3, 6, 12 months)
+- **Seasonality**: Month, quarter, year indicators
+- **Volatility Measures**: Rolling standard deviations
+
+**Business Impact:**
+- **Inventory Optimization**: Reduced stockouts and excess inventory
+- **Strategic Planning**: Data-driven market investment decisions
+- **Supply Chain Efficiency**: Precise material requirement planning
